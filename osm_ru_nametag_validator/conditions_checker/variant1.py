@@ -1,8 +1,8 @@
 import csv
 import re
 
-INPUT = 'ru-lakes.csv'
-OUTPUT = 'names-condition1.csv'
+INPUT = 'out/ru-lakes.csv'
+OUTPUT = 'out/variant1.csv'
 
 pattern = re.compile(r'^озеро\b')
 

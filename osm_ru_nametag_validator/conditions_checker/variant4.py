@@ -2,8 +2,8 @@ import csv
 import re
 from pymorphy3 import MorphAnalyzer
 
-INPUT = 'ru-lakes.csv'
-OUTPUT = 'names-condition4.csv'
+INPUT = 'out/ru-lakes.csv'
+OUTPUT = 'out/variant4.csv'
 
 morph = MorphAnalyzer()
 TOKEN = re.compile(r"[^\W\d_]+(?:-[^\W\d_]+)?")

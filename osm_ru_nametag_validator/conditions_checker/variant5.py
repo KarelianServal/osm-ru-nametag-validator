@@ -1,8 +1,8 @@
 import csv
 import re
 
-INPUT = 'ru-lakes.csv'
-OUTPUT = 'names-condition5.csv'
+INPUT = 'out/ru-lakes.csv'
+OUTPUT = 'out/variant5.csv'
 
 TOKEN = re.compile(r"[^\W\d_]+(?:-[^\W\d_]+)?")
 GENERIC = {'озеро', 'озера', 'озёра'}

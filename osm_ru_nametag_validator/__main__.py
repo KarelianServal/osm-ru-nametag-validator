@@ -8,13 +8,13 @@ import time
 
 import requests
 
-INPUT = 'ru-lakes.csv'
+INPUT = 'out/ru-lakes.csv'
 SCRIPTS = [
-    'name-conditions1.py',
-    'name-conditions2.py',
-    'name-conditions3.py',
-    'name-conditions4.py',
-    'name-conditions5.py',
+    'osm_ru_nametag_validator/conditions_checker/variant1.py',
+    'osm_ru_nametag_validator/conditions_checker/variant2.py',
+    'osm_ru_nametag_validator/conditions_checker/variant3.py',
+    'osm_ru_nametag_validator/conditions_checker/variant4.py',
+    'osm_ru_nametag_validator/conditions_checker/variant5.py',
 ]
 
 OVERPASS_ENDPOINTS = [
@@ -82,8 +82,12 @@ def run_script(script):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Анализ имён озёр из OSM на скорую руку. \nhttps://community.openstreetmap.org/t/name/148024',
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+                 description='\
+  Анализ тега [name=] озёр из OSM.\n\
+  https://community.openstreetmap.org/t/name/148024',
+                 formatter_class=argparse.RawDescriptionHelpFormatter
+             )
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--refresh', action='store_true',
                       help='принудительно скачать свежие данные')
@@ -93,11 +97,16 @@ def parse_args():
 
 
 def main():
+
     args = parse_args()
     if args.local:
         if not os.path.exists(INPUT):
             sys.exit(f'Ошибка: локальный файл {INPUT} не найден.')
+
     elif args.refresh or not os.path.exists(INPUT):
+        dir_name = os.path.dirname(INPUT)
+        if dir_name:
+            os.makedirs(dir_name, exist_ok=True)
         download_data(INPUT)
 
     total = count_total_names(INPUT)

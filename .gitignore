@@ -1,12 +1,13 @@
 # Python stuff
-__pycache__/
+*/__pycache__
+.venv
+*.egg-info
 *.pyc
-.venv/
-venv/
 
 # script data
+out/
 ru-lakes.csv
-names-condition*.csv
+variant*.csv
 
 # Github defaults
 .DS_Store
