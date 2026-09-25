@@ -110,7 +110,7 @@ lake-nametag-validator --refresh # Обновить ru-lakes.csv
 
 *** Overpass API
 Скрипт использует публичные API Overpass, [[https://wiki.openstreetmap.org/wiki/Overpass_API#Public_Overpass_API_instances][указанные в вики]].
-Если у вас есть свои API, то их можно использовать, создав фаил ~API_KEYS.txt~ в $PATH:
+Если у вас есть свои API, то их можно использовать, создав файл ~API_KEYS.txt~ в $PWD:
 
 #+begin_src txt
 https://overpass-api.de/api/interpreter
