@@ -12,7 +12,6 @@ RESET = "\033[0m"
 API_KEYS = 'API_KEYS.txt'
 
 PUBLIC_OVERPASS_ENDPOINTS = [
-    'https://overpass.kumi.systems/api/interpreter',
     'https://overpass.private.coffee/api/interpreter',
     'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
     'https://overpass-api.de/api/interpreter'
@@ -20,7 +19,7 @@ PUBLIC_OVERPASS_ENDPOINTS = [
 
 HEADERS = {'User-Agent': 'lakes-nametag-validator/0.1 (https://github.com/KarelianServal/osm-ru-nametag-validator)'}
 
-QUERY = '''[out:csv(::id, name; true; ",")][timeout:300];
+QUERY = '''[out:csv(::id, name; true; ",")][timeout:360];
 area["ISO3166-1"="RU"]->.russia;
 (
   node["natural"="water"]["water"="lake"]["name"](area.russia);
