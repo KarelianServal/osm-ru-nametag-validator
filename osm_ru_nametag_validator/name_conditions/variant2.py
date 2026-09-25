@@ -1,9 +1,5 @@
-import csv
 import re
 from pymorphy3 import MorphAnalyzer
-
-INPUT = 'out/ru-lakes.csv'
-OUTPUT = 'out/variant2.csv'
 
 morph = MorphAnalyzer()
 TOKEN = re.compile(r"[^\W\d_]+(?:-[^\W\d_]+)?")
@@ -36,18 +32,8 @@ def matches(name):
     return False
 
 
-count = 0
-result = []
-with open(INPUT, encoding='utf-8-sig') as f:
-    for row in csv.DictReader(f):
-        name = (row.get('name') or '').strip()
-        if name and matches(name):
-            count += 1
-            result.append((row['@id'], name))
-
-with open(OUTPUT, 'w', encoding='utf-8', newline='') as f:
-    writer = csv.writer(f)
-    writer.writerow(['@id', 'name'])
-    writer.writerows(result)
-
-print(f'Условие 2: {count}')
+def is_variant2(lake_name):
+    if lake_name and matches(lake_name):
+        return True
+    else:
+        return False

@@ -1,48 +1,24 @@
 import argparse
-import csv
+import textwrap
 import os
-import re
-import subprocess
 import sys
 
 from osm_ru_nametag_validator.overpass_request import download_data
+from osm_ru_nametag_validator.name_checker import name_checker
 
-INPUT = 'out/ru-lakes.csv'
-SCRIPTS = [
-    'osm_ru_nametag_validator/conditions_checker/variant1.py',
-    'osm_ru_nametag_validator/conditions_checker/variant2.py',
-    'osm_ru_nametag_validator/conditions_checker/variant3.py',
-    'osm_ru_nametag_validator/conditions_checker/variant4.py',
-    'osm_ru_nametag_validator/conditions_checker/variant5.py',
-]
-
-
-def count_total_names(path):
-    """Количество строк с непустым именем в исходном CSV."""
-    with open(path, encoding='utf-8-sig') as f:
-        return sum(
-            1 for row in csv.DictReader(f)
-            if (row.get('name') or '').strip()
-        )
-
-
-def run_script(script):
-    """Запускает скрипт и извлекает посчитанное им число из его вывода."""
-    proc = subprocess.run(
-        [sys.executable, script],
-        check=True, capture_output=True, text=True,
-    )
-    numbers = re.findall(r'\d+', proc.stdout)
-    return int(numbers[-1])
+DATA_FOLDER = 'out/'
+INPUT = DATA_FOLDER + 'ru-lakes.csv'
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-                 description='\
-  Анализ тега [name=] озёр из OSM.\n\
-  https://community.openstreetmap.org/t/name/148024',
-                 formatter_class=argparse.RawDescriptionHelpFormatter
+                description=textwrap.dedent("""
+                Анализ тега [name=] озёр из OSM.
+                https://community.openstreetmap.org/t/name/148024
+                """),
+                formatter_class=argparse.RawDescriptionHelpFormatter
              )
+
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--refresh', action='store_true',
                       help='принудительно скачать свежие данные')
@@ -64,11 +40,7 @@ def main():
             os.makedirs(dir_name, exist_ok=True)
         download_data(INPUT)
 
-    total = count_total_names(INPUT)
-    for i, script in enumerate(SCRIPTS, start=1):
-        count = run_script(script)
-        pct = round(count / total * 100) if total else 0
-        print(f'Условие {i}: {count}/{total} ({pct}%)')
+    name_checker(INPUT, DATA_FOLDER)
 
 
 if __name__ == '__main__':
