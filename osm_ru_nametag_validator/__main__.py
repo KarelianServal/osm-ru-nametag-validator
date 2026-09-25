@@ -4,9 +4,8 @@ import os
 import re
 import subprocess
 import sys
-import time
 
-import requests
+from osm_ru_nametag_validator.overpass_request import download_data
 
 INPUT = 'out/ru-lakes.csv'
 SCRIPTS = [
@@ -16,50 +15,6 @@ SCRIPTS = [
     'osm_ru_nametag_validator/conditions_checker/variant4.py',
     'osm_ru_nametag_validator/conditions_checker/variant5.py',
 ]
-
-OVERPASS_ENDPOINTS = [
-    'https://overpass-api.de/api/interpreter',
-    'https://overpass.kumi.systems/api/interpreter',
-    'https://overpass.private.coffee/api/interpreter',
-    'https://overpass.osm.rambler.ru/cgi/interpreter',
-]
-
-HEADERS = {'User-Agent': 'lake-name-analyzer/1.0'}
-
-QUERY = '''[out:csv(::id, name; true; ",")][timeout:300];
-area["ISO3166-1"="RU"]->.russia;
-(
-  node["natural"="water"]["water"="lake"]["name"](area.russia);
-  way["natural"="water"]["water"="lake"]["name"](area.russia);
-  relation["natural"="water"]["water"="lake"]["name"](area.russia);
-);
-out;'''
-
-
-def download_data(path, retries=3, pause=30):
-    """Скачивает CSV с озёрами России, перебирая зеркала Overpass API."""
-    print('Загрузка данных с Overpass API (может занять несколько минут)...')
-    for url in OVERPASS_ENDPOINTS:
-        for attempt in range(1, retries + 1):
-            try:
-                response = requests.post(
-                    url, data={'data': QUERY}, headers=HEADERS, timeout=360,
-                )
-                response.raise_for_status()
-                # явно декодируем UTF-8, иначе кириллица может испортиться
-                with open(path, 'w', encoding='utf-8', newline='') as f:
-                    f.write(response.content.decode('utf-8'))
-                print(f'Сохранено: {path} (зеркало: {url})')
-                return
-            except requests.RequestException as e:
-                print(f'  {url} не ответил: {e}')
-                if attempt < retries:
-                    print(f'  повторная попытка через {pause} с...')
-                    time.sleep(pause)
-    sys.exit(
-        'Ошибка: не удалось скачать данные ни с одного зеркала.\n'
-        'Попробуйте позже или запустите с --local, если есть локальный CSV.'
-    )
 
 
 def count_total_names(path):

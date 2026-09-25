@@ -1,6 +1,6 @@
 #+title: osm-ru-nametag-validator
 
-Скрипты для анализ имён озёр России из OpenStreetMap на скорую руку: проверка пяти вариантов конвенций именования (наличие и позиция слова «озеро»).
+Скрипты для анализ имён озёр России из OpenStreetMap: проверка пяти вариантов конвенций именования (наличие и позиция слова «озеро»).
 
 https://community.openstreetmap.org/t/name/148024
 
@@ -107,6 +107,16 @@ lake-nametag-validator --refresh # Обновить ru-lakes.csv
 
 Каждый скрипт variantN.py создаёт variantN.csv
 с именами, удовлетворяющими условию N.
+
+*** Overpass API
+Скрипт использует публичные API Overpass, [[https://wiki.openstreetmap.org/wiki/Overpass_API#Public_Overpass_API_instances][указанные в вики]].
+Если у вас есть свои API, то их можно использовать, создав фаил ~API_KEYS.txt~ в $PATH:
+
+#+begin_src txt
+https://overpass-api.de/api/interpreter
+https://maps.mail.ru/osm/tools/overpass/api/interpreter
+...
+#+end_src
 
 ** Данные
 
