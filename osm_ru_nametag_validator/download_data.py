@@ -3,12 +3,15 @@ import sys
 import time
 
 import requests
-from pathlib import Path
 
 from .cli_colors import RED, GREEN, RESET
 
 PWD_API_KEYS = 'API_KEYS.txt'
-SRC_API_KEYS = Path(__file__).resolve().parent.parent / 'API_KEYS.txt'
+PUB_API_KEYS = [
+    'https://overpass.private.coffee/api/interpreter',
+    'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
+    'https://overpass-api.de/api/interpreter'
+]
 
 retries = 3  # Times to try to query an API
 pause = 20   # Timeout between attempts
@@ -71,11 +74,10 @@ def download_data(CLI_API_KEY, INPUT):
 
         overpass_request(OVERPASS_ENDPOINTS, INPUT)
 
-    elif os.path.exists(SRC_API_KEYS):
-        print(f' | {GREEN}Найдены API ключи (osm_ru_nametag_validator/API_KEYS.txt){RESET}')
-        with open(SRC_API_KEYS, 'r', encoding='utf-8') as f:
-            OVERPASS_ENDPOINTS = f.read().splitlines()
+    elif PUB_API_KEYS:
+        print(' | API ключи (./API_KEYS.txt) не найдены')
+        print(' | Переключаемся на общедоступные API')
+        overpass_request(PUB_API_KEYS, INPUT)
 
-        overpass_request(OVERPASS_ENDPOINTS, INPUT)
     else:
         sys.exit(f'{RED}Ошибка: API Overpass (API_KEYS.txt) не найдены.{RESET}')
