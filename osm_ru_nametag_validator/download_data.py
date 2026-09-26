@@ -16,9 +16,9 @@ PUB_API_KEYS = [
 retries = 3  # Times to try to query an API
 pause = 20   # Timeout between attempts
 
-HEADERS = {'User-Agent': 'lakes-nametag-validator/0.1 (https://github.com/KarelianServal/osm-ru-nametag-validator)'}
+HEADERS = {'User-Agent': 'lakes-nametag-validator/0.1.0 (https://github.com/KarelianServal/osm-ru-nametag-validator)'}
 
-QUERY = '''[out:csv(::id, name; true; ",")][timeout:360];
+QUERY = '''[out:csv(::id, name; true; ",")][timeout:590];
 area["ISO3166-1"="RU"]->.russia;
 (
   node["natural"="water"]["water"="lake"]["name"](area.russia);
@@ -42,8 +42,13 @@ def overpass_request(OVERPASS_ENDPOINTS, INPUT):
                 )
                 response.raise_for_status()
 
+                content = response.content.decode('utf-8')
+                # Check if the response is blank or valid
+                if len(content.strip().splitlines()) <= 1:
+                    raise ValueError("Сервер вернул пустые данные")
+
                 with open(INPUT, 'w', encoding='utf-8', newline='') as f:
-                    f.write(response.content.decode('utf-8'))
+                    f.write(content)
                     print(f'{GREEN}Сохранено: {INPUT} (зеркало: {url}){RESET}')
                 return
 
