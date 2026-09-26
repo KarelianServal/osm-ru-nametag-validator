@@ -21,11 +21,10 @@ def parse_args():
                 formatter_class=argparse.RawDescriptionHelpFormatter
              )
 
-    mode = parser.add_mutually_exclusive_group()
     parser.add_argument('--refresh', action='store_true',
-                      help='принудительно скачать свежие данные')
+                        help='принудительно скачать свежие данные')
     parser.add_argument('--local', action='store_true',
-                      help='не скачивать, использовать локальный CSV')
+                        help='не скачивать, использовать локальный CSV')
     parser.add_argument('--api', default=os.environ.get("API_KEY"),
                         help='использовать выбранный API ключ для запроса Overpass')
 
