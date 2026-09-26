@@ -21,3 +21,9 @@ lakes-nametag-validator = "osm_ru_nametag_validator.__main__:main"
 [tool.setuptools.packages.find]
 include = [ "osm_ru_nametag_validator*" ]
 
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths=["tests"]
+addopts = "-ra"

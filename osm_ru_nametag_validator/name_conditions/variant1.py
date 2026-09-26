@@ -1,6 +1,6 @@
 import re
 
-pattern = re.compile(r'^озеро\b')
+pattern = re.compile(r'^(озеро|озера|озёра)\b')
 
 
 def is_variant1(lake_name):
