@@ -1,21 +1,23 @@
 [build-system]
-requires = [ "setuptools" ]
+requires = [ "setuptools>=77" ]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "osm-ru-nametag-validator"
-version = "0.1"
-requires-python = ">3.9"
-dependencies = [ "pymorphy3", "requests" ]
+version = "0.1.0"
+requires-python = ">=3.9"
+dependencies = [ "pymorphy3>=2.0", "requests>=2.31" ]
 # readme = "README.org"
 license = "GPL-3.0-only"
 license-files = ["LICENSE"]
 
-[project.scripts]
-lakes-nametag-validator = "osm_ru_nametag_validator.__main__:main"
-
-[tool.setuptools]
-packages = [ "osm_ru_nametag_validator" ]
-
 [project.urls]
 Homepage = "https://github.com/KarelianServal/OSM-ru-nametag-validator"
 Issues = "https://github.com/KarelianServal/OSM-ru-nametag-validator/issues"
+
+[project.scripts]
+lakes-nametag-validator = "osm_ru_nametag_validator.__main__:main"
+
+[tool.setuptools.packages.find]
+include = [ "osm_ru_nametag_validator*" ]
+
