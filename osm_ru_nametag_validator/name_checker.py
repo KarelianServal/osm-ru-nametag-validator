@@ -38,7 +38,7 @@ def name_checker(INPUT, DATA_FOLDER):
     for i, variant_valid in enumerate(VARIANTS):
         valid_names_amount, data = read_csv(INPUT, variant_valid)
 
-        OUTPUT = DATA_FOLDER + f'variant{i}-names.csv'
+        OUTPUT = DATA_FOLDER + f'variant{i+1}-names.csv'
         write_csv(data, OUTPUT)
 
         pct = round(valid_names_amount / total * 100) if total else 0

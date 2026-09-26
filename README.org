@@ -103,6 +103,7 @@ pip install -e .
 lake-nametag-validator           # Запрос к Overpass API, анализ имен
 lake-nametag-validator --local   # Не делать запрос; использовать локальный ru-lakes.csv
 lake-nametag-validator --refresh # Обновить ru-lakes.csv 
+lake-nametag-validator --api https://... # Использовать свой ключ Overpass
 #+end_src
 
 Каждый скрипт variantN.py создаёт variantN.csv
@@ -110,7 +111,8 @@ lake-nametag-validator --refresh # Обновить ru-lakes.csv
 
 *** Overpass API
 Скрипт использует публичные API Overpass, [[https://wiki.openstreetmap.org/wiki/Overpass_API#Public_Overpass_API_instances][указанные в вики]].
-Если у вас есть свои API, то их можно использовать, создав файл ~API_KEYS.txt~ в $PWD:
+Если у вас есть свои API, то их можно использовать, создав файл ~API_KEYS.txt~
+в $PWD или добавив флаг ~--api~:
 
 #+begin_src txt
 https://overpass-api.de/api/interpreter
