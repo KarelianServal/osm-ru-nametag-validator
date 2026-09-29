@@ -1,7 +1,7 @@
-from osm_ru_nametag_validator.name_conditions.variant2 import (
+from osm_ru_nametag_validator.name_conditions.variant4 import (
     is_adjf,
     is_gent,
-    is_variant2
+    is_variant4
 )
 valid_adjf = [
     'Нижнее',
@@ -32,25 +32,21 @@ valid_nouns = [
 ]
 
 
-valid_variant2_names = [
-    'озеро Байкал',
+valid_variant4_names = [
+    'Байкал',
     'Ладожское озеро',
     'Нижнее озеро',
     'Нижнее озеро ',
     'Карачево озеро',
-    'озеро Логиярви',
-    'озеро Сямозеро',
-    'озеро Сухое Озеро',
-    'озеро ЗАМОЗЕРО',
-    'озеро Большой Кременкуль',
+    'Сямозеро',
+    'Логиярви',
+    'Сухое Озеро',
     'Большое Ушницкое озеро',
     'Русское озеро',
-    ' озеро Что ',
+    'Озероозеро',
 
 
     'Мелкие озёра',
-    'озёра Путорц',
-    'озера Близнецы',
 
     'первое озеро',
     'Первое озеро',
@@ -80,26 +76,28 @@ valid_variant2_names = [
 
 ]
 
-non_valid_variant2_names = [
-    'озероозеро',
-    'озёраОзери',
-    'ОЗЕРО Озерище'
+non_valid_variant4_names = [
+    'озёра Озерь',
 
-    'Байкал',
-    'Озеро Байкал',
+    'озеро Байкал',
+    'озеро Логиярви',
     'озеро Нижнее',
     'озеро Карачево',
     'озеро Ладожское',
     'озеро Ладожское ',
-    'Логиярви',
-    'Сямозеро',
-    'Сухое Озеро',
+    'озеро Сямозеро', 'озеро Сухое Озеро',
+    'озеро ЗАМОЗЕРО',
+    'озеро Большой Кременкуль',
+    ' озеро Что ',
 
     'Нижнее',
     'Ладожское',
     'Первое',
     'второе',
     'Русское',
+
+    'озёра Путорц',
+    'озера Близнецы',
 
     'озеро первое',
     'озеро Первое',
@@ -129,15 +127,15 @@ non_valid_variant2_names = [
 ]
 
 
-def test_is_variant2():
+def test_is_variant4():
     for word in valid_adjf:
         assert is_adjf(word)
-    for word in valid_gent:
-        assert is_gent(word)
     for word in valid_nouns:
         assert not is_adjf(word)
+    for word in valid_gent:
+        assert is_gent(word)
 
-    for name in valid_variant2_names:
-        assert is_variant2(name)
-    for name in non_valid_variant2_names:
-        assert not is_variant2(name)
+    for name in valid_variant4_names:
+        assert is_variant4(name)
+    for name in non_valid_variant4_names:
+        assert not is_variant4(name)

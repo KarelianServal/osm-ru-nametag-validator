@@ -18,7 +18,7 @@ pause = 20   # Timeout between attempts
 
 HEADERS = {'User-Agent': 'lakes-nametag-validator/0.1.0 (https://github.com/KarelianServal/osm-ru-nametag-validator)'}
 
-QUERY = '''[out:csv(::id, name; true; ",")][timeout:590];
+QUERY = '''[out:csv(::type, ::id, name; true; ",")][timeout:590];
 area["ISO3166-1"="RU"]->.russia;
 (
   node["natural"="water"]["water"="lake"]["name"](area.russia);
