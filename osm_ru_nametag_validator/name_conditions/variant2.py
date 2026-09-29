@@ -6,34 +6,31 @@ TOKEN = re.compile(r"[^\W\d_]+(?:-[^\W\d_]+)?")
 OZERO = {'озеро', 'озера', 'озёра'}
 
 
-def pos_of(word):
-    return morph.parse(word)[0].tag.POS
+# Прилагательные
+def is_adjf(word):
+    for p in morph.parse(word):
+        if p.tag.POS in ('ADJF', 'ADJS'):
+            return True
 
 
-def is_noun(word):
-    return pos_of(word) in (None, 'NOUN')
-
-
-def is_adj(word):
-    return pos_of(word) in ('ADJF', 'PRTF')
+# Родительный падеж
+def is_gent(word):
+    for p in morph.parse(word):
+        if p.tag.case == 'gent':
+            return True
 
 
 def matches(name):
-    """A: озеро + существительное | B: прилагательные + озеро."""
     for variant in name.split('/'):
         tokens = TOKEN.findall(variant.strip())
-        low = [t.lower() for t in tokens]
         if len(tokens) < 2:
             continue
-        if low[0] in OZERO and any(is_noun(t) for t in tokens[1:]):
+        if tokens[-1] in OZERO and is_adjf(tokens[-2]):
             return True
-        if low[-1] in OZERO and all(is_adj(t) for t in tokens[:-1]):
+        if tokens[0] in OZERO and not is_adjf(tokens[-1]):
             return True
     return False
 
 
 def is_variant2(lake_name):
-    if lake_name and matches(lake_name):
-        return True
-    else:
-        return False
+    return lake_name and matches(lake_name)
