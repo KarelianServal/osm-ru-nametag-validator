@@ -5,7 +5,7 @@ morph = MorphAnalyzer()
 TOKEN = re.compile(r"[^\W\d_]+(?:-[^\W\d_]+)?")
 
 OZERO = {'озеро', 'озера', 'озёра'}
-COMP = re.compile(r'\b(?!оз[её]р[оа]\b)\w*[оО]з[её]р\w*\b')
+COMP = re.compile(r'\b(?!оз[её]р[оа]\b).*[оО][зЗ][еёЕЁ][рР].*\b')
 
 
 def is_compound(name):
