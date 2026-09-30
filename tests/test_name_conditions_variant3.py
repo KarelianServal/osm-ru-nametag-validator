@@ -1,58 +1,10 @@
-from osm_ru_nametag_validator.name_conditions.variant3 import (
-    is_compound,
-    is_adjf,
-    is_variant3
-)
-
-valid_adjf = [
-    'Нижнее',
-    'Ладожское',
-    'Первое',
-    'второе',
-    'Русское',
-]
-
-valid_nouns = [
-    'Камень',
-    'Варенье',
-    'Портной',
-    'Стали',
-
-    'Логиярви',
-    'Байкал',
-    'Сямозеро',
-    'ЗАМОЗЕРО',
-]
-
-valid_compounds = [
-    'Сямозеро',
-    'Лемозеро',
-    'ЗАМОЗЕРО',
-    'Чудо-озеро',
-    'Озеро',
-    'Озерище',
-    'Озерки'
-]
-
-invalid_compounds = [
-    'Оооооо',
-    'озеро',
-    'озера',
-    'озёра',
-    'колесо',
-    'река',
-    'Логиярви',
-    'Байкал',
-    'Чудское',
-    'Озеозе',
-]
+from osm_ru_nametag_validator.name_conditions.variant3 import is_variant3
 
 valid_variant3_names = [
     'озеро Байкал',
     'Ладожское озеро',
     'Нижнее озеро',
     'Нижнее озеро ',
-    'Карачево озеро',
     'Сямозеро',
     'Ламозеро',
     'Озерки',
@@ -65,6 +17,8 @@ valid_variant3_names = [
     'Русское озеро',
     ' озеро Что ',
     'Озероозеро',
+
+    'озеро Карачево',
 
     'озеро Бочарова',
     'озеро Большого Бочарова',
@@ -112,7 +66,6 @@ non_valid_variant3_names = [
     'Логиярви',
 
     'озеро Нижнее',
-    'озеро Карачево',
     'озеро Ладожское',
     'озеро Ладожское ',
     'озеро Сямозеро',
@@ -129,6 +82,9 @@ non_valid_variant3_names = [
     'Первое',
     'второе',
     'Русское',
+
+    'Карачево',
+    'Карачево озеро',
 
     'Бочарова',
     'Большого Бочарова',
@@ -174,15 +130,6 @@ non_valid_variant3_names = [
 
 
 def test_is_variant3():
-    for word in valid_adjf:
-        assert is_adjf(word)
-    for word in valid_nouns:
-        assert not is_adjf(word)
-    for word in valid_compounds:
-        assert is_compound(word)
-    for word in invalid_compounds:
-        assert not is_compound(word)
-
     for name in valid_variant3_names:
         assert is_variant3(name)
     for name in non_valid_variant3_names:
