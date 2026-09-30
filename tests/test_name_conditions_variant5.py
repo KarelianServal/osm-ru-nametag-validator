@@ -1,6 +1,4 @@
-from osm_ru_nametag_validator.name_conditions.variant5 import (
-    is_variant5
-)
+from osm_ru_nametag_validator.name_conditions.variant5 import is_variant5
 
 valid_variant5_names = [
     'Байкал',
@@ -14,9 +12,6 @@ valid_variant5_names = [
     'Первое',
     'второе',
     'Русское',
-
-
-
     'Мелкие',
 
     'первое',

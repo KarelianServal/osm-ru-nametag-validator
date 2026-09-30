@@ -1,24 +1,11 @@
 import re
 from pymorphy3 import MorphAnalyzer
 
+from .rules import is_geox_or_adjf, is_gent
+
 morph = MorphAnalyzer()
 TOKEN = re.compile(r"[^\W\d_]+(?:-[^\W\d_]+)?")
 OZERO = {'озеро', 'озера', 'озёра'}
-
-
-# Прилагательные
-def is_adjf(word):
-    for p in morph.parse(word):
-        if p.tag.POS in ('ADJF', 'ADJS'):
-            return True
-
-
-# Родительный падеж
-def is_gent(word):
-    word = word.rpartition('-')[-1]
-    for p in morph.parse(word):
-        if p.tag.POS == 'NOUN':
-            return p.tag.case == 'gent'
 
 
 def matches(name):
@@ -30,15 +17,23 @@ def matches(name):
                 raise RuntimeError(f'Неверное имя - {tokens[0]}')
 
             if tokens[-1] in OZERO:
-                if is_adjf(tokens[-2]) and not is_gent(tokens[-2]):
+                if is_geox_or_adjf(tokens[-2]) == 'geox':
+                    return False
+                if (is_geox_or_adjf(tokens[-2]) == 'adjf' and
+                        not is_gent(tokens[-2])):
                     return True
 
             if tokens[0] in OZERO:
+                if is_geox_or_adjf(tokens[-1]) == 'geox':
+                    return False
                 if is_gent(tokens[-1]):
                     return True
 
         else:
-            if not is_adjf(tokens[-1]) and not is_gent(tokens[-1]):
+            if is_geox_or_adjf(tokens[-1]) == 'geox':
+                return True
+            if (not is_geox_or_adjf(tokens[-1]) == 'adjf'
+                    and not is_gent(tokens[-1])):
                 return True
 
     return False

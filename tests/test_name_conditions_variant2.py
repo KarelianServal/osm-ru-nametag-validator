@@ -1,34 +1,10 @@
-from osm_ru_nametag_validator.name_conditions.variant2 import (
-    is_adjf,
-    is_variant2
-)
-valid_adjf = [
-    'Нижнее',
-    'Ладожское',
-    'Первое',
-    'второе',
-    'Русское',
-]
-
-valid_nouns = [
-    'Камень',
-    'Варенье',
-    'Портной',
-    'Стали',
-
-    'Логиярви',
-    'Байкал',
-    'Сямозеро',
-    'ЗАМОЗЕРО',
-]
-
+from osm_ru_nametag_validator.name_conditions.variant2 import is_variant2
 
 valid_variant2_names = [
     'озеро Байкал',
     'Ладожское озеро',
     'Нижнее озеро',
     'Нижнее озеро ',
-    'Карачево озеро',
     'озеро Логиярви',
     'озеро Сямозеро',
     'озеро Сухое Озеро',
@@ -38,6 +14,8 @@ valid_variant2_names = [
     'Русское озеро',
     'озёра Озерь',
     ' озеро Что ',
+
+    'озеро Карачево',
 
     'озеро Бочарова',
     'озеро Большого Бочарова',
@@ -89,7 +67,6 @@ non_valid_variant2_names = [
     'Байкал',
     'Озеро Байкал',
     'озеро Нижнее',
-    'озеро Карачево',
     'озеро Ладожское',
     'озеро Ладожское ',
     'Логиярви',
@@ -106,6 +83,9 @@ non_valid_variant2_names = [
     'Первое',
     'второе',
     'Русское',
+
+    'Карачево озеро',
+    'Карачево',
 
     'Бочарова',
     'Большого Бочарова',
@@ -151,11 +131,6 @@ non_valid_variant2_names = [
 
 
 def test_is_variant2():
-    for word in valid_adjf:
-        assert is_adjf(word)
-    for word in valid_nouns:
-        assert not is_adjf(word)
-
     for name in valid_variant2_names:
         assert is_variant2(name)
     for name in non_valid_variant2_names:
