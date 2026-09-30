@@ -1,6 +1,5 @@
 from osm_ru_nametag_validator.name_conditions.variant2 import (
     is_adjf,
-    is_gent,
     is_variant2
 )
 valid_adjf = [
@@ -10,14 +9,6 @@ valid_adjf = [
     'второе',
     'Русское',
 ]
-
-valid_gent = [
-    'Стали',
-    'Бочарова',
-    'Левинсон-Лессинга',
-    'озеро Мерцбахера',
-]
-
 
 valid_nouns = [
     'Камень',
@@ -47,8 +38,14 @@ valid_variant2_names = [
     'Русское озеро',
     ' озеро Что ',
 
+    'озеро Бочарова',
+    'озеро Левинсон-Лессинга',
+    'озеро Мерцбахера',
+    'озеро Толмачёва',
+    'озеро Усачёва',
 
     'Мелкие озёра',
+    'Конопляные озера',
     'озёра Путорц',
     'озера Близнецы',
 
@@ -101,6 +98,12 @@ non_valid_variant2_names = [
     'второе',
     'Русское',
 
+    'Бочарова',
+    'Левинсон-Лессинга',
+    'Мерцбахера',
+    'Толмачёва',
+    'Усачёва',
+
     'озеро первое',
     'озеро Первое',
     'озеро второе',
@@ -132,8 +135,6 @@ non_valid_variant2_names = [
 def test_is_variant2():
     for word in valid_adjf:
         assert is_adjf(word)
-    for word in valid_gent:
-        assert is_gent(word)
     for word in valid_nouns:
         assert not is_adjf(word)
 

@@ -13,13 +13,6 @@ def is_adjf(word):
             return True
 
 
-# Родительный падеж
-def is_gent(word):
-    for p in morph.parse(word):
-        if p.tag.case == 'gent':
-            return True
-
-
 def matches(name):
     for variant in name.split('/'):
         tokens = TOKEN.findall(variant.strip())
