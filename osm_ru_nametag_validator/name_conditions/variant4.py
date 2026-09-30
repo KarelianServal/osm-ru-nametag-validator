@@ -5,10 +5,6 @@ morph = MorphAnalyzer()
 TOKEN = re.compile(r"[^\W\d_]+(?:-[^\W\d_]+)?")
 OZERO = {'озеро', 'озера', 'озёра'}
 
-# Edge-cases
-unique = {
-}
-
 
 # Прилагательные
 def is_adjf(word):
@@ -28,16 +24,19 @@ def is_gent(word):
 def matches(name):
     for variant in name.split('/'):
         tokens = TOKEN.findall(variant.strip())
-        if len(tokens) < 2:
-            if not is_adjf(tokens[0]) and not is_gent(tokens[0]):
-                return True
-            else:
-                continue
-        if tokens[-1] in OZERO and is_adjf(tokens[-2]):
-            return True
-        if tokens[0] in OZERO:
-            if is_gent(tokens[-1]):
-                return True
+
+        if any(t in OZERO for t in tokens):
+            if len(tokens) < 2:
+                raise RuntimeError(f'Неверное имя - {tokens[0]}')
+
+            if tokens[-1] in OZERO:
+                if is_adjf(tokens[-2]) and not is_gent(tokens[-2]):
+                    return True
+
+            if tokens[0] in OZERO:
+                if is_gent(tokens[-1]):
+                    return True
+
         else:
             if not is_adjf(tokens[-1]) and not is_gent(tokens[-1]):
                 return True
