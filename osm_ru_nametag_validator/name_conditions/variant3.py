@@ -19,24 +19,34 @@ def is_adjf(word):
             return True
 
 
+# Родительный падеж
+def is_gent(word):
+    word = word.rpartition('-')[-1]
+    for p in morph.parse(word):
+        if p.tag.POS == 'NOUN':
+            return p.tag.case == 'gent'
+
+
 def matches(name):
     for variant in name.split('/'):
         tokens = TOKEN.findall(variant.strip())
-        has_ozero = any(t in OZERO for t in tokens)
         has_compound = any(COMP.search(t) for t in tokens)
-        has_2compounds = sum(bool(COMP.search(t)) for t in tokens) >= 2
 
-        if has_compound:
-            if has_ozero or has_2compounds:
+        if any(t in OZERO for t in tokens):
+            if len(tokens) < 2:
+                raise RuntimeError(f'Неверное имя - {tokens[0]}')
+            if has_compound:
                 continue
-            else:
-                return True
-        if len(tokens) < 2:
-            continue
-        if tokens[-1] in OZERO and is_adjf(tokens[-2]):
+            if tokens[-1] in OZERO:
+                if is_adjf(tokens[-2]) and not is_gent(tokens[-2]):
+                    return True
+            if tokens[0] in OZERO:
+                if not is_adjf(tokens[-1]) or is_gent(tokens[-1]):
+                    return True
+
+        elif has_compound:
             return True
-        if tokens[0] in OZERO and not is_adjf(tokens[-1]):
-            return True
+
     return False
 
 
