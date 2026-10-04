@@ -26,6 +26,7 @@ patterns = {
     'zero': re.compile(r'\b(?!озеро|озера|озёра)[оО]*[зЗ][еЕёЁ][рР][оОаА]\b'),
 
     'only_ozero_no_name': re.compile(r'^[оО][зЗ][еЕёЁ][рР][оОаА]$'),
+    'small_letter': re.compile(r'^(?!озеро|озера|озёра)[а-я].*'),
 }
 
 
