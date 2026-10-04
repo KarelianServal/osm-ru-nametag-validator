@@ -25,6 +25,12 @@ def name_type(tokens):
     word = tokens[-1]
 
     if morph.word_is_known(word):
+        parse0 = morph.parse(word)[0]
+        if (parse0.score > 0.7
+                and parse0.tag.case == 'nomn'
+                and parse0.tag.POS == 'NOUN'):
+            return 'noun'
+
         for p in morph.parse(word):
             if p.tag.POS == 'ADJS':
                 return 'substant'
