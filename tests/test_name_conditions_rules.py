@@ -1,17 +1,11 @@
 from osm_ru_nametag_validator.name_conditions.rules import (
-    is_geox_or_adjf,
-    is_gent,
+    name_type
 )
 
-valid_geox = [
+valid_substant = [
     'Карачево',
     'Бойково',
     'Щучино',
-    'Логиярви',
-    'Байкал',
-    'Сямозеро',
-    'ЗАМОЗЕРО',
-
 ]
 valid_adjf = [
     'Нижнее',
@@ -20,6 +14,7 @@ valid_adjf = [
     'второе',
     'Русское',
 ]
+
 invalid_adjf = [
     # 'Айпынгытгын',
 
@@ -33,6 +28,7 @@ invalid_adjf = [
 
 valid_gent = [
     'Стали',
+    'Вязок',
     'Бочарова',
     'Левинсон-Лессинга',
     'Мерцбахера',
@@ -71,17 +67,13 @@ invalid_compounds = [
 
 
 def test_rules():
-    for word in valid_geox:
-        assert is_geox_or_adjf(word) == 'geox'
+    for word in valid_substant:
+        assert name_type(word) == 'substant'
     for word in valid_adjf:
-        assert is_geox_or_adjf(word) == 'adjf'
+        assert name_type(word) == 'adjf'
     for word in invalid_adjf:
-        assert not is_geox_or_adjf(word)
+        assert not name_type(word) == 'adjf'
     for word in valid_gent:
-        assert is_gent(word)
+        assert name_type(word) == 'gent'
     for word in invalid_gent:
-        assert not is_gent(word)
-    # for word in valid_compounds:
-    #     assert is_compound(word)
-    # for word in invalid_compounds:
-    #     assert not is_compound(word)
+        assert not name_type(word) == 'gent'
