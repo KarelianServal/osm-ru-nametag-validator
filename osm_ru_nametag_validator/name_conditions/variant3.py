@@ -38,13 +38,12 @@ def matches(name):
         if has_compound:
             return False
 
-        if tokens[0] in OZERO:
-            if name_type(tokens[-1]) != 'adjf':
-                return True
+        no_OZERO_tokens = [t for t in tokens if t not in OZERO]
 
+        if tokens[0] in OZERO:
+            return name_type(no_OZERO_tokens) != 'adjf'
         if tokens[-1] in OZERO:
-            if name_type(tokens[-2]) == 'adjf':
-                return True
+            return name_type(no_OZERO_tokens) == 'adjf'
 
     elif has_compound:
         return True

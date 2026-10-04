@@ -68,12 +68,12 @@ invalid_compounds = [
 
 def test_rules():
     for word in valid_substant:
-        assert name_type(word) == 'substant'
+        assert name_type([word]) == 'substant'
     for word in valid_adjf:
-        assert name_type(word) == 'adjf'
+        assert name_type([word]) == 'adjf'
     for word in invalid_adjf:
-        assert not name_type(word) == 'adjf'
+        assert not name_type([word]) == 'adjf'
     for word in valid_gent:
-        assert name_type(word) == 'gent'
+        assert name_type([word]) == 'gent'
     for word in invalid_gent:
-        assert not name_type(word) == 'gent'
+        assert not name_type([word]) == 'gent'
