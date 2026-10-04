@@ -10,6 +10,9 @@ out-old/
 ru-lakes.csv
 variant*.csv
 
+# org-mode files [https://github.com/github/markup/issues/2105]
+*.org
+
 # Github defaults
 .DS_Store
 .idea
