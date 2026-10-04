@@ -1,10 +1,10 @@
 [build-system]
-requires = [ "setuptools>=77" ]
+requires = [ "setuptools>=80", "setuptools-scm[simple]>=9.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "osm-ru-nametag-validator"
-version = "0.1.0"
+dynamic = ["version"]
 requires-python = ">=3.9"
 dependencies = [ "pymorphy3>=2.0", "requests>=2.31" ]
 # readme = "README.org"
