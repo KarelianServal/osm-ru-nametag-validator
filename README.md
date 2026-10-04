@@ -12,7 +12,7 @@
 
 <https://community.openstreetmap.org/t/name/148024>
 
-Соответствие `["natural"="water"]["water"="lake"]["name"]` [вариантам](./VАRIANTS.md)  на 05.10.2026:
+Соответствие `["natural"="water"]["water"="lake"]["name"]` [вариантам](./VARIANTS.md)  на 05.10.2026:
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
