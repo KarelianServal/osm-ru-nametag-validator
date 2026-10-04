@@ -37,17 +37,15 @@ def matches(name):
         if len(tokens) < 2:
             raise RuntimeError(f'Неверное имя - "{tokens[0]}"')
 
-        if tokens[0] in OZERO:
-            if name_type(tokens[-1]) == 'gent':
-                return True
+        no_OZERO_tokens = [t for t in tokens if t not in OZERO]
 
+        if tokens[0] in OZERO:
+            return name_type(no_OZERO_tokens) == 'gent'
         if tokens[-1] in OZERO:
-            if name_type(tokens[-2]) == 'adjf':
-                return True
+            return name_type(no_OZERO_tokens) == 'adjf'
 
     else:
-        if name_type(tokens[-1]) not in ('adjf', 'gent'):
-            return True
+        return name_type(tokens) not in ('adjf', 'gent')
 
     return False
 
