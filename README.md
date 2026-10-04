@@ -1,19 +1,18 @@
 
 # Table of Contents
 
-1.  [](#org8245724):TOC:
-2.  [Установка](#orgb6702b4)
-    1.  [pipx](#orga714d76)
-    2.  [Ручная установка](#org56f231a)
-3.  [Использование](#org99f412b)
-    1.  [Overpass API](#orgf2a47e0)
-4.  [Данные](#org595d1e7)
+1.  [Установка](#org3a339ac)
+    1.  [pipx](#orgc43e8c4)
+    2.  [Ручная установка](#orgc7af24e)
+2.  [Использование](#orge63e7a2)
+    1.  [Overpass API](#orgec869d5)
+3.  [Данные](#org4e364bb)
 
 Скрипты для анализ имён озёр России из OpenStreetMap: проверка пяти вариантов конвенций именования (наличие и позиция слова «озеро»).
 
 <https://community.openstreetmap.org/t/name/148024>
 
-Соответствие `["natural"="water"]["water"="lake"]["name"]` вариантам на 24.09.2026:
+Соответствие `["natural"="water"]["water"="lake"]["name"]` [вариантам](./VАRIANTS.md)  на 05.10.2026:
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -65,24 +64,19 @@
 </table>
 
 
-<a id="org8245724"></a>
-
-#      :TOC:
-
-
-<a id="orgb6702b4"></a>
+<a id="org3a339ac"></a>
 
 # Установка
 
 
-<a id="orga714d76"></a>
+<a id="orgc43e8c4"></a>
 
 ## pipx
 
     pipx install git+https://github.com/KarelianServal/osm-ru-nametag-validator
 
 
-<a id="org56f231a"></a>
+<a id="orgc7af24e"></a>
 
 ## Ручная установка
 
@@ -96,7 +90,7 @@
     pip install -e .
 
 
-<a id="org99f412b"></a>
+<a id="orge63e7a2"></a>
 
 # Использование
 
@@ -109,7 +103,7 @@
 с именами рек, удовлетворяющими условию N.
 
 
-<a id="orgf2a47e0"></a>
+<a id="orgec869d5"></a>
 
 ## Overpass API
 
@@ -122,7 +116,7 @@
     ...
 
 
-<a id="org595d1e7"></a>
+<a id="org4e364bb"></a>
 
 # Данные
 
