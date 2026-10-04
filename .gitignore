@@ -6,6 +6,7 @@
 
 # script data
 out/
+out-old/
 ru-lakes.csv
 variant*.csv
 
