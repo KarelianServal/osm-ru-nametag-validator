@@ -27,6 +27,8 @@ unique = {
 
 
 patterns = {
+    'empty': re.compile(r'^[ ]*$'),
+
     'whitelist_invalid_chars': re.compile(r'[^0-9а-яА-ЯёЁ()\-\\\s]'),
 
     'weird_numerals': re.compile(r'(?![0-9]+-)[0-9]'),
@@ -34,6 +36,11 @@ patterns = {
     'double_spaces': re.compile(r'\s{2,}'),
 
     'hyphen': re.compile(r'(?<![\w-])(озеро|озера|озёра)[-–—]\b'),
+
+    'hyphen_left': re.compile(r'(?<![\w])-'),
+    'hyphen_right': re.compile(r'-(?![\w])'),
+
+    'brackets_inside': re.compile(r'\w[()]+\w'),
 
     'OzErO': re.compile(r'(?<![\w-])(?!озеро|озера|озёра)[оО][зЗ][еЕёЁ][рР][оОаА]\b'),
 
@@ -44,8 +51,8 @@ patterns = {
     'zero': re.compile(r'(?<![\w-])(?!озеро|озера|озёра)[оО]*[зЗ][еЕёЁ][рР][оОаА]\b'),
 
     'only_ozero_no_name': re.compile(r'^[оО][зЗ][еЕёЁ][рР][оОаА]$'),
-    'only_ozero_and_num_before': re.compile(r'^[0-9].\w \b(озеро|оз[её]ра)\b'),
-    'only_ozero_and_num_after': re.compile(r'\b(озеро|оз[её]ра)\b [0-9].\w$'),
+    'only_ozero_and_num_before': re.compile(r'^[0-9][-\w]* \b(озеро|оз[её]ра)\b'),
+    'only_ozero_and_num_after': re.compile(r'\b(озеро|оз[её]ра)\b [0-9][-\w]*$'),
 
     'small_letter': re.compile(r'(?<![\w-])(?!озеро|озера|озёра)[а-я].*'),
 }

@@ -1,6 +1,9 @@
 from osm_ru_nametag_validator.name_conditions.exceptions import is_exception
 
 valid_exceptions = [
+    '',
+    '   ',
+
     '.',
     'Ozero Logiyarvi',
     'озеро №2',
@@ -16,6 +19,11 @@ valid_exceptions = [
     'озеро-Байкал',
     'озеро—Байкал',
 
+    '-Байкал',
+    'Байкал-',
+
+    'Байкал(озеро)',
+
     'ОзЕрО Байкал',
 
     'озер Байкал',
@@ -27,9 +35,11 @@ valid_exceptions = [
     'озеро',
     'озера',
     'озёра',
-    
+
     'озеро 1-е',
     '1-е озеро',
+    'озеро 53-е',
+    'озеро 1',
 
     'озеро байкал',
 ]
