@@ -16,7 +16,7 @@ PUB_API_KEYS = [
 retries = 3  # Times to try to query an API
 pause = 20   # Timeout between attempts
 
-HEADERS = {'User-Agent': 'lakes-nametag-validator/0.1.0 (https://github.com/KarelianServal/osm-ru-nametag-validator)'}
+HEADERS = {'User-Agent': 'lakes-nametag-validator/0.1.3 (https://github.com/KarelianServal/osm-ru-nametag-validator)'}
 
 QUERY = '''[out:csv(::type, ::id, name; true; ",")][timeout:590];
 area["ISO3166-1"="RU"]->.russia;
