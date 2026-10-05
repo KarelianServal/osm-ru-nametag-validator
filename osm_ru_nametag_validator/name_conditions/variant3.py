@@ -23,14 +23,13 @@
 import re
 from .rules import name_type
 
-TOKEN = re.compile(r"[^\W\d_]+(?:-[^\W\d_]+)?")
+TOKEN = re.compile(r'(?<![()\w-])[а-яА-ЯёЁ]+(?:-[а-яА-ЯёЁ0-9]+)*(?![()\w-])')
 OZERO = {'озеро', 'озера', 'озёра'}
-NUM = re.compile(r"[0-9]+-\w+")  # 1-й, 2-ая
 COMP = re.compile(r'\b(?!оз[её]р[оа]\b).*[оО][зЗ][еёЕЁ][рР].*\b')
 
 
 def matches(name):
-    tokens = [t for t in TOKEN.findall(name.strip()) if not NUM.search(t)]
+    tokens = TOKEN.findall(name.strip())
     has_compound = any(COMP.search(t) for t in tokens)
 
     if any(t in OZERO for t in tokens):

@@ -23,17 +23,18 @@
 import re
 from .rules import name_type
 
-TOKEN = re.compile(r"[^\W\d_]+(?:-[^\W\d_]+)?")
+TOKEN = re.compile(r'(?<![()\w-])[а-яА-ЯёЁ]+(?:-[а-яА-ЯёЁ0-9]+)*(?![()\w-])')
 OZERO = {'озеро', 'озера', 'озёра'}
-NUM = re.compile(r"[0-9]+-\w+")  # 1-й, 2-ая
 
 
 def matches(name):
-    tokens = [t for t in TOKEN.findall(name.strip()) if not NUM.search(t)]
+    tokens = TOKEN.findall(name.strip())
+    if not tokens:
+        raise RuntimeError(f'Неверное имя - "{name}"')
 
     if any(t in OZERO for t in tokens):
         if len(tokens) < 2:
-            raise RuntimeError(f'Неверное имя - "{tokens[0]}"')
+            raise RuntimeError(f'Неверное имя - "{name}"')
 
         no_OZERO_tokens = [t for t in tokens if t not in OZERO]
 
