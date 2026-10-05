@@ -25,11 +25,12 @@ from .rules import name_type
 
 TOKEN = re.compile(r"[^\W\d_]+(?:-[^\W\d_]+)?")
 OZERO = {'озеро', 'озера', 'озёра'}
+NUM = re.compile(r"[0-9]+-\w+")  # 1-й, 2-ая
 COMP = re.compile(r'\b(?!оз[её]р[оа]\b).*[оО][зЗ][еёЕЁ][рР].*\b')
 
 
 def matches(name):
-    tokens = TOKEN.findall(name.strip())
+    tokens = [t for t in TOKEN.findall(name.strip()) if not NUM.search(t)]
     has_compound = any(COMP.search(t) for t in tokens)
 
     if any(t in OZERO for t in tokens):

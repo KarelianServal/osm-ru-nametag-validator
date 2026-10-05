@@ -21,17 +21,15 @@
 '''
 
 import re
-from pymorphy3 import MorphAnalyzer
-
 from .rules import name_type
 
-morph = MorphAnalyzer()
 TOKEN = re.compile(r"[^\W\d_]+(?:-[^\W\d_]+)?")
 OZERO = {'озеро', 'озера', 'озёра'}
+NUM = re.compile(r"[0-9]+-\w+")  # 1-й, 2-ая
 
 
 def matches(name):
-    tokens = TOKEN.findall(name.strip())
+    tokens = [t for t in TOKEN.findall(name.strip()) if not NUM.search(t)]
 
     if any(t in OZERO for t in tokens):
         if len(tokens) < 2:
