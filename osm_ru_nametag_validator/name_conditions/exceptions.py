@@ -21,11 +21,15 @@ unique = {
     ('way', '1565190214'),     # Чебачий чвор
     ('relation', '1893698'),   # У семи верст
     ('way', '326524773'),      # В горе
+    ('way', '132422169'),      # Восток-1
+    ('way', '132422195'),      # Восток-2
 }
 
 
 patterns = {
-    'whitelist_invalid_chars': re.compile(r'[^а-яА-ЯёЁ()\-\\\s]'),
+    'whitelist_invalid_chars': re.compile(r'[^0-9а-яА-ЯёЁ()\-\\\s]'),
+
+    'weird_numerals': re.compile(r'(?![0-9]+-)[0-9]'),
 
     'double_spaces': re.compile(r'\s{2,}'),
 
@@ -40,6 +44,9 @@ patterns = {
     'zero': re.compile(r'(?<![\w-])(?!озеро|озера|озёра)[оО]*[зЗ][еЕёЁ][рР][оОаА]\b'),
 
     'only_ozero_no_name': re.compile(r'^[оО][зЗ][еЕёЁ][рР][оОаА]$'),
+    'only_ozero_and_num_before': re.compile(r'^[0-9].\w \b(озеро|оз[её]ра)\b'),
+    'only_ozero_and_num_after': re.compile(r'\b(озеро|оз[её]ра)\b [0-9].\w$'),
+
     'small_letter': re.compile(r'(?<![\w-])(?!озеро|озера|озёра)[а-я].*'),
 }
 
