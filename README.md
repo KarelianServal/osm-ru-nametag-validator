@@ -1,18 +1,18 @@
 
 # Table of Contents
 
-1.  [Установка](#org3a339ac)
-    1.  [pipx](#orgc43e8c4)
-    2.  [Ручная установка](#orgc7af24e)
-2.  [Использование](#orge63e7a2)
-    1.  [Overpass API](#orgec869d5)
-3.  [Данные](#org4e364bb)
+1.  [Установка](#orge230b81)
+    1.  [pipx](#org23d40e6)
+    2.  [Ручная установка](#org81f3470)
+2.  [Использование](#orgdec00fc)
+    1.  [Overpass API](#org341ae82)
+3.  [Данные](#org10227c3)
 
 Скрипты для анализ имён озёр России из OpenStreetMap: проверка пяти вариантов конвенций именования (наличие и позиция слова «озеро»).
 
 <https://community.openstreetmap.org/t/name/148024>
 
-Соответствие `["natural"="water"]["water"="lake"]["name"]` [вариантам](./VARIANTS.md)  на 05.10.2026:
+Соответствие `["natural"="water"]["water"="lake"]["name"]` [вариантам](./VARIANTS.md) на 05.10.2026:
 
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -27,56 +27,56 @@
 <tbody>
 <tr>
 <td class="org-left">Исключения</td>
-<td class="org-left">1593/39713</td>
-<td class="org-right">4%</td>
+<td class="org-left">1834/39715</td>
+<td class="org-right">5%</td>
 </tr>
 
 <tr>
 <td class="org-left">Вариант 1</td>
-<td class="org-left">11509/38120</td>
+<td class="org-left">11469/37881</td>
 <td class="org-right">30%</td>
 </tr>
 
 <tr>
 <td class="org-left">Вариант 2</td>
-<td class="org-left">9209/38120</td>
+<td class="org-left">9199/37881</td>
 <td class="org-right">24%</td>
 </tr>
 
 <tr>
 <td class="org-left">Вариант 3</td>
-<td class="org-left">10939/38120</td>
+<td class="org-left">10928/37881</td>
 <td class="org-right">29%</td>
 </tr>
 
 <tr>
 <td class="org-left">Вариант 4</td>
-<td class="org-left">18125/38120</td>
-<td class="org-right">48%</td>
+<td class="org-left">17979/37881</td>
+<td class="org-right">47%</td>
 </tr>
 
 <tr>
 <td class="org-left">Вариант 5</td>
-<td class="org-left">23935/38120</td>
+<td class="org-left">23749/37881</td>
 <td class="org-right">63%</td>
 </tr>
 </tbody>
 </table>
 
 
-<a id="org3a339ac"></a>
+<a id="orge230b81"></a>
 
 # Установка
 
 
-<a id="orgc43e8c4"></a>
+<a id="org23d40e6"></a>
 
 ## pipx
 
     pipx install git+https://github.com/KarelianServal/osm-ru-nametag-validator
 
 
-<a id="orgc7af24e"></a>
+<a id="org81f3470"></a>
 
 ## Ручная установка
 
@@ -90,7 +90,7 @@
     pip install -e .
 
 
-<a id="orge63e7a2"></a>
+<a id="orgdec00fc"></a>
 
 # Использование
 
@@ -103,7 +103,7 @@
 с именами рек, удовлетворяющими условию N.
 
 
-<a id="orgec869d5"></a>
+<a id="org341ae82"></a>
 
 ## Overpass API
 
@@ -116,7 +116,7 @@
     ...
 
 
-<a id="org4e364bb"></a>
+<a id="org10227c3"></a>
 
 # Данные
 
