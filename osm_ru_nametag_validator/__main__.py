@@ -3,13 +3,14 @@ import textwrap
 import os
 import sys
 
-from .download_data import download_data
+from .api_keys import get_api_keys
+from .download_data import download_lakes
 from .name_checker import name_checker
 from .cli_colors import RED, RESET
 
 
 DATA_FOLDER = 'out/'
-INPUT = DATA_FOLDER + 'ru-lakes.csv'
+LAKES_DATA = DATA_FOLDER + 'ru-lakes.csv'
 
 
 def parse_args():
@@ -21,12 +22,12 @@ def parse_args():
                 formatter_class=argparse.RawDescriptionHelpFormatter
              )
 
-    parser.add_argument('--refresh', action='store_true',
-                        help='принудительно скачать свежие данные')
-    parser.add_argument('--local', action='store_true',
-                        help='не скачивать, использовать локальный CSV')
     parser.add_argument('--api', default=os.environ.get("API_KEY"),
                         help='использовать выбранный API ключ для запроса Overpass')
+    parser.add_argument('--local', action='store_true',
+                        help='не скачивать озера, использовать локальный CSV')
+    parser.add_argument('--refresh', action='store_true',
+                        help='принудительно обновить озера')
 
     args = parser.parse_args()
 
@@ -39,20 +40,22 @@ def parse_args():
 
 
 def main():
-
     args = parse_args()
 
-    if args.local:
-        if not os.path.exists(INPUT):
-            sys.exit(f'{RED}Ошибка: локальный файл {INPUT} не найден.{RESET}')
+    if (args.refresh or not os.path.exists(LAKES_DATA)):
+        API = get_api_keys(args.api)
 
-    elif args.refresh or not os.path.exists(INPUT):
-        dir_name = os.path.dirname(INPUT)
+    if args.local:
+        if not os.path.exists(LAKES_DATA):
+            sys.exit(f'{RED}Ошибка: локальный файл {LAKES_DATA} не найден.{RESET}')
+
+    elif args.refresh or not os.path.exists(LAKES_DATA):
+        dir_name = os.path.dirname(LAKES_DATA)
         if dir_name:
             os.makedirs(dir_name, exist_ok=True)
-        download_data(args.api, INPUT)
+        download_lakes(API, LAKES_DATA)
 
-    name_checker(INPUT, DATA_FOLDER)
+    name_checker(LAKES_DATA, DATA_FOLDER)
 
 
 if __name__ == '__main__':
