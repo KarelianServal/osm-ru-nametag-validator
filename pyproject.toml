@@ -5,8 +5,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "osm-ru-nametag-validator"
 dynamic = ["version"]
-requires-python = ">=3.9"
-dependencies = [ "pymorphy3>=2.0", "requests>=2.31" ]
+requires-python = ">=3.10"
+dependencies = [ "pymorphy3>=2.0",
+                 "requests>=2.31",
+                 "geopandas>=1.0",
+                 "pandas>=2.0",
+                 "shapely>=2.0" ]
 # readme = "README.org"
 license = "GPL-3.0-only"
 license-files = ["LICENSE"]

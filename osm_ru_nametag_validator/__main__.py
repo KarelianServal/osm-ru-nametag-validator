@@ -4,13 +4,14 @@ import os
 import sys
 
 from .api_keys import get_api_keys
-from .download_data import download_lakes
+from .download_data import download_lakes, download_regions
 from .name_checker import name_checker
 from .cli_colors import RED, RESET
 
 
 DATA_FOLDER = 'out/'
 LAKES_DATA = DATA_FOLDER + 'ru-lakes.csv'
+REGIONS_DATA = DATA_FOLDER + 'ru-regions.geojson'
 
 
 def parse_args():
@@ -28,6 +29,8 @@ def parse_args():
                         help='не скачивать озера, использовать локальный CSV')
     parser.add_argument('--refresh', action='store_true',
                         help='принудительно обновить озера')
+    parser.add_argument('--refresh-regions', action='store_true',
+                        help='принудительно обновить границы регионов')
 
     args = parser.parse_args()
 
@@ -42,8 +45,18 @@ def parse_args():
 def main():
     args = parse_args()
 
-    if (args.refresh or not os.path.exists(LAKES_DATA)):
+    if (args.refresh or args.refresh_regions or
+            not os.path.exists(REGIONS_DATA) or
+            not os.path.exists(LAKES_DATA)):
         API = get_api_keys(args.api)
+
+    if args.refresh_regions or not os.path.exists(REGIONS_DATA):
+        dir_name = os.path.dirname(REGIONS_DATA)
+        if dir_name:
+            os.makedirs(dir_name, exist_ok=True)
+        download_regions(API, REGIONS_DATA)
+    else:
+        print(f'Найдены данные регионов [{REGIONS_DATA}]')
 
     if args.local:
         if not os.path.exists(LAKES_DATA):
@@ -53,7 +66,9 @@ def main():
         dir_name = os.path.dirname(LAKES_DATA)
         if dir_name:
             os.makedirs(dir_name, exist_ok=True)
-        download_lakes(API, LAKES_DATA)
+        download_lakes(API, LAKES_DATA, REGIONS_DATA)
+    else:
+        print(f'Найдены данные озер [{LAKES_DATA}]')
 
     name_checker(LAKES_DATA, DATA_FOLDER)
 
