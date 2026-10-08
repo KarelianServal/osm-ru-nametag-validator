@@ -140,11 +140,14 @@ def download_lakes(API, LAKES_DATA, REGIONS_DATA):
     result = overpass_request(API, LAKES_QUERY).content.decode("utf-8")
 
     if not result.startswith("@type"):
-        raise RuntimeError(f"Overpass вернул ошибку:\n{result[:50]}")
+        raise RuntimeError(f'Overpass вернул ошибку:\n{result[:50]}')
+    else:
+        print(f'{GREEN}Получены данные озер c Overpass{RESET}')
 
     lakes_df = read_csv(StringIO(result), sep=';')
     lakes_df = lakes_df.dropna(subset=["@lat", "@lon"]).copy()
 
+    print(f'Находим их регионы...')
     lakes_data = attach_regions(lakes_df, REGIONS_DATA)
 
     lakes_data.to_csv(LAKES_DATA,

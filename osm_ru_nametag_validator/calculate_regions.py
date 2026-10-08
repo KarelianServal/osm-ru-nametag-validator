@@ -30,8 +30,6 @@ def _load_regions(REGIONS_DATA):
 
 
 def attach_regions(lakes_df, REGIONS_DATA):
-    print('Находим регионы озер...')
-
     lakes_df = lakes_df.dropna(subset=["@lat", "@lon"]).copy()
     lakes_gdf = geopandas.GeoDataFrame(
         lakes_df,
@@ -52,6 +50,4 @@ def attach_regions(lakes_df, REGIONS_DATA):
     joined = joined.sort_values("region", na_position="last")
     joined = joined.drop_duplicates(subset=["@type", "@id"])
 
-    print('Регионы озер успешно найдены')
     return joined[["@type", "@id", "name", "region", "@lat", "@lon"]]
-
