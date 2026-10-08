@@ -9,9 +9,10 @@ from .name_checker import name_checker
 from .cli_colors import RED, RESET
 
 
-DATA_FOLDER = 'out/'
-LAKES_DATA = DATA_FOLDER + 'ru-lakes.csv'
-REGIONS_DATA = DATA_FOLDER + 'ru-regions.geojson'
+DATA_DIR = 'data'
+OUT_DIR = 'out'
+LAKES_DATA = os.path.join(DATA_DIR, 'ru-lakes.csv')
+REGIONS_DATA = os.path.join(DATA_DIR, 'ru-regions.geojson')
 
 
 def parse_args():
@@ -70,7 +71,7 @@ def main():
     else:
         print(f'Найдены данные озер [{LAKES_DATA}]')
 
-    name_checker(LAKES_DATA, DATA_FOLDER)
+    name_checker(LAKES_DATA, OUT_DIR)
 
 
 if __name__ == '__main__':
