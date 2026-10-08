@@ -15,7 +15,7 @@ PUB_API_KEYS = [
 def get_api_keys(CLI_API_KEY):
     if CLI_API_KEY:
         print(f'{GREEN}Получен API ключ ({CLI_API_KEY}){RESET}')
-        return CLI_API_KEY
+        return [CLI_API_KEY]
 
     elif os.path.exists(PWD_API_KEYS):
         print(f'{GREEN}Найдены API ключи (./API_KEYS.txt){RESET}')
