@@ -9,7 +9,7 @@ from .cli_colors import RED, RESET
 retries = 5  # Times to try to query an API
 pause = 20   # Timeout between attempts
 
-HEADERS = {'User-Agent': 'lakes-nametag-validator/0.1.4 (https://github.com/KarelianServal/osm-ru-nametag-validator)'}
+HEADERS = {'User-Agent': 'lakes-nametag-validator/0.2.0 (https://github.com/KarelianServal/osm-ru-nametag-validator)'}
 
 
 def _spin(stop):
