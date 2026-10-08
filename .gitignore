@@ -5,8 +5,8 @@
 *.pyc
 
 # script data
-out/
-out-old/
+out*
+data*
 ru-lakes.csv
 variant*.csv
 API_KEYS.txt
