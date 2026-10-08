@@ -7,7 +7,7 @@ from .name_conditions.exceptions import is_exception
 def count_names(path):
     with open(path, encoding='utf-8-sig') as f:
         return sum(
-            1 for row in csv.DictReader(f)
+            1 for row in csv.DictReader(f, delimiter=';')
             if (row.get('name') or '').strip()
         )
 
@@ -18,16 +18,29 @@ def read_csv(INPUT, condition):
     invalid_result = []
 
     with open(INPUT, encoding='utf-8-sig') as f:
-        for row in csv.DictReader(f):
+        for row in csv.DictReader(f, delimiter=';'):
             osm_type = (row.get('@type') or '').strip()
             osm_id = (row.get('@id') or '').strip()
             osm_name = (row.get('name') or '').strip()
+            osm_region = (row.get('region') or '').strip()
+            osm_lat = (row.get('@lat') or '').strip()
+            osm_lon = (row.get('@lon') or '').strip()
 
             if condition(osm_type, osm_id, osm_name):
                 count += 1
-                valid_result.append((osm_type, osm_id, osm_name))
+                valid_result.append((osm_type,
+                                     osm_id,
+                                     osm_name,
+                                     osm_region,
+                                     osm_lat,
+                                     osm_lon))
             else:
-                invalid_result.append((osm_type, osm_id, osm_name))
+                invalid_result.append((osm_type,
+                                       osm_id,
+                                       osm_name,
+                                       osm_region,
+                                       osm_lat,
+                                       osm_lon))
     return count, valid_result, invalid_result
 
 
@@ -36,19 +49,29 @@ def read_valid_names(data, condition):
     valid_result = []
     invalid_result = []
 
-    for osm_type, osm_id, name in data:
+    for osm_type, osm_id, name, region, lat, lon in data:
         if condition(name):
             count += 1
-            valid_result.append((osm_type, osm_id, name))
+            valid_result.append((osm_type,
+                                 osm_id,
+                                 name,
+                                 region,
+                                 lat,
+                                 lon))
         else:
-            invalid_result.append((osm_type, osm_id, name))
+            invalid_result.append((osm_type,
+                                   osm_id,
+                                   name,
+                                   region,
+                                   lat,
+                                   lon))
     return count, valid_result, invalid_result
 
 
 def write_csv(data, OUTPUT):
     with open(OUTPUT, 'w', encoding='utf-8', newline='') as f:
-        writer = csv.writer(f)
-        writer.writerow(['@type', '@id', 'name'])
+        writer = csv.writer(f, delimiter=';')
+        writer.writerow(['@type', '@id', 'name', 'region', '@lat', '@lon'])
         writer.writerows(data)
 
 
