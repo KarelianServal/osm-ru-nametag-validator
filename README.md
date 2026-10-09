@@ -1,12 +1,12 @@
 
 # Table of Contents
 
-1.  [Установка](#orge004570)
-    1.  [pipx](#org1c83316)
-    2.  [Ручная установка](#org39cf8b7)
-2.  [Использование](#org87dd670)
-    1.  [Overpass API](#org1573829)
-3.  [Данные](#org55985cc)
+1.  [Установка](#org60e3d59)
+    1.  [pipx](#org8631863)
+    2.  [Ручная установка](#org34e414d)
+2.  [Использование](#orgaba5fbf)
+    1.  [Overpass API](#org31a380a)
+3.  [Данные](#org6f142d4)
 
 Скрипты для анализ имён озёр России из OpenStreetMap: проверка пяти вариантов конвенций именования (наличие и позиция слова «озеро»).
 
@@ -64,19 +64,19 @@
 </table>
 
 
-<a id="orge004570"></a>
+<a id="org60e3d59"></a>
 
 # Установка
 
 
-<a id="org1c83316"></a>
+<a id="org8631863"></a>
 
 ## pipx
 
     pipx install git+https://github.com/KarelianServal/osm-ru-nametag-validator
 
 
-<a id="org39cf8b7"></a>
+<a id="org34e414d"></a>
 
 ## Ручная установка
 
@@ -90,20 +90,21 @@
     pip install -e .
 
 
-<a id="org87dd670"></a>
+<a id="orgaba5fbf"></a>
 
 # Использование
 
-    lake-nametag-validator           # Запрос к Overpass API, анализ имен
-    lake-nametag-validator --local   # Не делать запрос; использовать локальный ru-lakes.csv
-    lake-nametag-validator --refresh # Обновить ru-lakes.csv 
+    lake-nametag-validator                   # Запрос к Overpass API, анализ имен
+    lake-nametag-validator --local           # использовать локальный ru-lakes.csv
+    lake-nametag-validator --refresh         # Обновить ru-lakes.csv 
+    lake-nametag-validator --refresh-regions # Обновить ru-regions.geojson
     lake-nametag-validator --api https://... # Использовать свой ключ Overpass
 
-Каждый скрипт variantN.py создаёт variantN.csv
-с именами рек, удовлетворяющими условию N.
+Каждый скрипт variant<i>.py создаёт фаил variant<i>/<регион>.csv
+с именами рек региона, удовлетворяющими условию N.
 
 
-<a id="org1573829"></a>
+<a id="org31a380a"></a>
 
 ## Overpass API
 
@@ -115,8 +116,18 @@
     https://maps.mail.ru/osm/tools/overpass/api/interpreter
     ...
 
+Если у вас есть свои данные рек (`ru-lakes.csv`) или границ регионов(`ru-regions.geojson`), поместите их в директорию `data/`
 
-<a id="org55985cc"></a>
+Важно: таблица (`ru-lakes.csv`) должна выглядеть таким образом:
+
+    @type;@id;name;region;@lat;@lon
+    way;132546383;озеро Сосновское;Алтайский край;53.5314321;83.6942961
+    relation;6587825;Чистые озёра;Алтайский край;53.3235729;83.53153
+    relation;545229;озеро Никольское;Вологодская область;59.83778;38.7723872
+    ...
+
+
+<a id="org6f142d4"></a>
 
 # Данные
 
