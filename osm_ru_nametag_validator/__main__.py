@@ -32,6 +32,8 @@ def parse_args():
                         help='принудительно обновить озера')
     parser.add_argument('--refresh-regions', action='store_true',
                         help='принудительно обновить границы регионов')
+    parser.add_argument('--json', action='store_true',
+                        help='выводить озера в формате .json вместо .csv')
 
     args = parser.parse_args()
 
@@ -71,7 +73,7 @@ def main():
     else:
         print(f'Найдены данные озер [{LAKES_DATA}]')
 
-    name_checker(LAKES_DATA, OUT_DIR)
+    name_checker(LAKES_DATA, OUT_DIR, args.json)
 
 
 if __name__ == '__main__':

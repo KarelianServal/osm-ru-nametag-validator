@@ -1,5 +1,6 @@
-import csv
 import os
+import csv
+import json
 from collections import defaultdict
 
 
@@ -13,6 +14,7 @@ def count_names(path):
             1 for row in csv.DictReader(f, delimiter=';')
             if (row.get('name') or '').strip()
         )
+
 
 def read_csv(INPUT, condition):
     count = 0
@@ -87,14 +89,35 @@ def write_csv(data, OUTPUT_DIR):
             writer.writerows(rows)
 
 
-def name_checker(INPUT, OUT_DIR):
+def write_json(data, OUTPUT_DIR):
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+    headers = ['@type', '@id', 'name', 'region', '@lat', '@lon']
+
+    groups = defaultdict(list)
+    for row in data:
+        region = row[3]
+        groups[region].append(row)
+
+    for region, rows in groups.items():
+        safe_name = region.replace('/', '_').replace('\\', '_')
+        path = os.path.join(OUTPUT_DIR, f"{safe_name}.json")
+        records = [dict(zip(headers, row)) for row in rows]
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(records, f, indent=2, ensure_ascii=False)
+
+
+def name_checker(INPUT, OUT_DIR, is_json):
     total = count_names(INPUT)
 
     (exeptions_amount,
      valid_exceptions,
      valid_names) = read_csv(INPUT, is_exception)
 
-    write_csv(valid_exceptions, os.path.join(OUT_DIR, 'exceptions'))
+    if is_json:
+        write_json(valid_exceptions, os.path.join(OUT_DIR, 'exceptions'))
+    else:
+        write_csv(valid_exceptions, os.path.join(OUT_DIR, 'exceptions'))
 
     pct = round(exeptions_amount / total * 100) if total else 0
     print(f'Исключения: {exeptions_amount}/{total} ({pct}%)')
@@ -110,7 +133,10 @@ def name_checker(INPUT, OUT_DIR):
                        os.path.join(OUT_DIR, f'invalid-variant{i+1}')]
 
         for t, data in enumerate((valid_data, invalid_data)):
-            write_csv(data, VARIANT_DIR[t])
+            if json:
+                write_json(data, VARIANT_DIR[t])
+            else:
+                write_csv(data, VARIANT_DIR[t])
 
         pct = round(valid_names_amount / total * 100) if total else 0
         print(f'Условие {i+1}: {valid_names_amount}/{total} ({pct}%)')
