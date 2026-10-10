@@ -2,17 +2,21 @@ import argparse
 import textwrap
 import os
 import sys
+import json
 
 from .api_keys import get_api_keys
 from .download_data import download_lakes, download_regions
 from .name_checker import name_checker
 from .cli_colors import RED, RESET
 
+from .statistics import stats
+
 
 DATA_DIR = 'data'
 OUT_DIR = 'out'
 LAKES_DATA = os.path.join(DATA_DIR, 'ru-lakes.csv')
 REGIONS_DATA = os.path.join(DATA_DIR, 'ru-regions.geojson')
+STATS_FILE = os.path.join(OUT_DIR, 'stats.json')
 
 
 def parse_args():
@@ -34,6 +38,8 @@ def parse_args():
                         help='принудительно обновить границы регионов')
     parser.add_argument('--json', action='store_true',
                         help='выводить озера в формате .json вместо .csv')
+    parser.add_argument('--out-dir',default=os.environ.get("OUT_DIR"),
+                        help='выбрать директорию для вывода')
 
     args = parser.parse_args()
 
@@ -48,6 +54,10 @@ def parse_args():
 def main():
     args = parse_args()
 
+    if args.out_dir:
+        OUT_DIR = args.out_dir
+        STATS_FILE = os.path.join(OUT_DIR, 'stats.json')
+        
     if (args.refresh or args.refresh_regions or
             not os.path.exists(REGIONS_DATA) or
             not os.path.exists(LAKES_DATA)):
@@ -74,7 +84,9 @@ def main():
         print(f'Найдены данные озер [{LAKES_DATA}]')
 
     name_checker(LAKES_DATA, OUT_DIR, args.json)
-
+    
+    with open(STATS_FILE, 'w') as fp:
+        json.dump(stats, fp, sort_keys=True, indent=4)
 
 if __name__ == '__main__':
     main()
