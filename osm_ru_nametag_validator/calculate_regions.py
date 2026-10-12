@@ -9,8 +9,6 @@ def _load_regions(REGIONS_DATA):
     elif regions.crs != "EPSG:4326":
         regions = regions.to_crs("EPSG:4326")
 
-    regions = geopandas.read_file(REGIONS_DATA)
-
     regions = regions[regions.geometry.notna() & ~regions.geometry.is_empty]
     regions = regions.set_geometry(regions.geometry.make_valid())
     regions = regions.explode(index_parts=False)
