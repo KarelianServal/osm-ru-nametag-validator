@@ -1,13 +1,15 @@
 import json
-from datetime import datetime
 import importlib.metadata
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from .iso_codes import iso_codes
 
+TZ = ZoneInfo("Europe/Moscow")
 __version__ = importlib.metadata.version("osm-ru-nametag-validator")
 
 stats = {
-    "update_time": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+    "update_time": datetime.now(TZ).strftime("%d/%m/%Y %H:%M:%S"),
     "version": __version__.split(".dev")[0] + ".dev" if ".dev" in __version__ else __version__,
 
     "names_amount": {

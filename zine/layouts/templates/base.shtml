@@ -14,7 +14,7 @@
                 <h5 class="version"><a href="https://github.com/KarelianServal/osm-ru-nametag-validator" :text="$site.asset('out/stats.json').ziggy().get('version').prefix('(').suffix(')')"></a></h5>   
             </div>
 
-            <h5 :text="$site.asset('out/stats.json').ziggy().get('update_time').prefix('Последнее обновление: ')"></h5>   
+            <h5 :text="$site.asset('out/stats.json').ziggy().get('update_time').prefix('Последнее обновление: ').suffix(' (МСК)')"></h5>   
         </header>
         <super>
             <footer>
