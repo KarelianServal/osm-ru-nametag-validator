@@ -12,57 +12,6 @@
 
 <https://community.openstreetmap.org/t/name/148024>
 
-Соответствие `["natural"="water"]["water"="lake"]["name"]` [вариантам](./VARIANTS.md) на 09.10.2026:
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="org-left" />
-
-<col  class="org-left" />
-
-<col  class="org-right" />
-</colgroup>
-<tbody>
-<tr>
-<td class="org-left">Исключения</td>
-<td class="org-left">1630/39749</td>
-<td class="org-right">4%</td>
-</tr>
-
-<tr>
-<td class="org-left">Вариант 1</td>
-<td class="org-left">11561/38119</td>
-<td class="org-right">30%</td>
-</tr>
-
-<tr>
-<td class="org-left">Вариант 2</td>
-<td class="org-left">9267/38119</td>
-<td class="org-right">24%</td>
-</tr>
-
-<tr>
-<td class="org-left">Вариант 3</td>
-<td class="org-left">10981/38119</td>
-<td class="org-right">29%</td>
-</tr>
-
-<tr>
-<td class="org-left">Вариант 4</td>
-<td class="org-left">18110/38119</td>
-<td class="org-right">48%</td>
-</tr>
-
-<tr>
-<td class="org-left">Вариант 5</td>
-<td class="org-left">23873/38119</td>
-<td class="org-right">63%</td>
-</tr>
-</tbody>
-</table>
-
 
 <a id="org60e3d59"></a>
 
@@ -94,11 +43,13 @@
 
 # Использование
 
-    lake-nametag-validator                   # Запрос к Overpass API, анализ имен
-    lake-nametag-validator --local           # использовать локальный ru-lakes.csv
-    lake-nametag-validator --refresh         # Обновить ru-lakes.csv 
-    lake-nametag-validator --refresh-regions # Обновить ru-regions.geojson
-    lake-nametag-validator --api https://... # Использовать свой ключ Overpass
+    lakes-nametag-validator                   # Запрос к Overpass API, анализ имен
+    lakes-nametag-validator --api <API>       # Использовать свой ключ Overpass
+    lakes-nametag-validator --local           # использовать локальный ru-lakes.csv
+    lakes-nametag-validator --refresh         # Обновить ru-lakes.csv 
+    lakes-nametag-validator --refresh-regions # Обновить ru-regions.geojson
+    lakes-nametag-validator --json            #  выводить озера в формате .json
+    lakes-nametag-validator --out-dir <DIR>   # Выбрать директорию для вывода
 
 Каждый скрипт variant<i>.py создаёт фаил variant<i>/<регион>.csv
 с именами рек региона, удовлетворяющими условию N.
