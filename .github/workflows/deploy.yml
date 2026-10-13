@@ -1,0 +1,82 @@
+name: Deploy zine pages
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+  permissions:
+    contents: read
+    pages: write
+    id-token: write
+
+  concurrency:
+    group: "pages"
+    cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: "pip"
+          cache-dependency-path: pyproject.toml
+
+      - name: Install validator
+        run: pip install -e .
+
+      - name: Pick cache key
+        id: date
+        run: echo "day=$(date +%F)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore cached data file
+        uses: actions/cache@v4
+        with:
+          path: data/ru-regions.geojson
+          key: overpass-${{ steps.date.outputs.day }}
+
+      - name: Run validator
+        env:
+          OVERPASS_API: ${{ secrets.OVERPASS_API }}
+        run: >-
+          lakes-nametag-validator
+          --json
+          --out-dir zine/assets/out
+          --api "$OVERPASS_API"
+
+      - name: Generate .smd pages
+        working-directory: zine
+        run: bash generate-smd-pages.sh
+
+      - name: Setup Zine
+        uses: kristoff-it/setup-zine@v2
+
+      - name: Build site
+        working-directory: zine
+        run: zine release
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: zine/public
+
+      - name: Deploy to Github Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
