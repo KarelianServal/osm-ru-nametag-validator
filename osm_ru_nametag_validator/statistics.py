@@ -8,7 +8,7 @@ __version__ = importlib.metadata.version("osm-ru-nametag-validator")
 
 stats = {
     "update_time": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-    "version": __version__,
+    "version": __version__.split(".dev")[0] + ".dev" if ".dev" in __version__ else __version__,
 
     "names_amount": {
         "all": 0,
@@ -49,18 +49,6 @@ def _get_pcts():
 
 
 def _write_iso_codes(ISO_CODES_DATA, REGIONS_DATA):
-    # with open(REGIONS_DATA, encoding="utf-8") as f:
-    #     data = json.load(f)
-
-    # for r in regions:
-    #     for el in data["features"]:
-    #         if el["properties"]["name:ru"] == r:
-    #             iso_codes[r] = el["properties"]["ISO3166-2"]
-
-    # sort regions by lakes amount (useful in Zine parsing)
-
-    # result = [{"name": name, "iso": code} for name, code in iso_codes.items()]
-
     counts = stats["names_amount"]["region"]
     iso_codes.sort(key=lambda x: counts.get(x["name"], 0), reverse=True)
 
