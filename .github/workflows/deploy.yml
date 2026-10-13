@@ -62,8 +62,18 @@ jobs:
         working-directory: zine
         run: bash generate-smd-pages.sh
 
-      - name: Setup Zine
-        uses: kristoff-it/setup-zine@v2
+      # - name: Setup Zine
+      #   uses: kristoff-it/setup-zine@v2
+      #   run: zine release
+
+      # This is required since 'uses:' ignores 'working-directory'
+      - name: Install Zine
+        run: |
+          VERSION=$(sed -n 's/.*\.zine_version[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' zine/zine.ziggy)
+          wget -q -O /tmp/zine.tar.xz \
+            "https://github.com/kristoff-it/zine/releases/download/v${VERSION}/x86_64-linux-musl.tar.xz"
+          mkdir -p /tmp/zine && tar xJf /tmp/zine.tar.xz -C /tmp/zine
+          echo "/tmp/zine" >> "$GITHUB_PATH"
 
       - name: Build site
         working-directory: zine
