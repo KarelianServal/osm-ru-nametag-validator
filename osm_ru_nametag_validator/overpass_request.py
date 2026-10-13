@@ -6,6 +6,7 @@ import requests
 
 from .cli_colors import RED, RESET
 from .statistics import stats
+from .api_keys import mask_key
 
 retries = 5  # Times to try to query an API
 pause = 20   # Timeout between attempts
@@ -33,7 +34,8 @@ def _clear_spin():
 
 def overpass_request(OVERPASS_ENDPOINTS,  QUERY):
     for url in OVERPASS_ENDPOINTS:
-        print(f' | Пробуем зеркало ({url})...')
+        mask = mask_key(url)
+        print(f' | Пробуем зеркало ({mask})...')
 
         for attempt in range(1, retries + 1):
             stop = threading.Event()

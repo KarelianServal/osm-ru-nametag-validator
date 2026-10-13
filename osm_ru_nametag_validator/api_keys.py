@@ -1,5 +1,6 @@
 import os
 import sys
+import re
 
 from .cli_colors import GREEN, RED, RESET
 
@@ -11,10 +12,30 @@ PUB_API_KEYS = [
     'https://overpass.private.coffee/api/interpreter',
 ]
 
+MASK_RE = re.compile(
+    r"(?:(?<=://)[^/?#]*)"
+    r"|(?<![A-Za-z0-9_-])"
+    r"(?:osm|tools|overpass|api/interpreter)"
+    r"(?![A-Za-z0-9_-])"
+    r"|([A-Za-z0-9_-]{7,})"
+)
+
+
+def _short(s):
+    return s[:4] + "…" if len(s) > 8 else "***"
+
+
+def mask_key(key):
+    return MASK_RE.sub(
+        lambda m: _short(m.group(1)) if m.group(1) is not None else m.group(0),
+        key
+    )
+
 
 def get_api_keys(CLI_API_KEY):
     if CLI_API_KEY:
-        print(f'{GREEN}Получен API ключ ({CLI_API_KEY}){RESET}')
+        mask = mask_key(CLI_API_KEY)
+        print(f'{GREEN}Получен API ключ ({mask}){RESET}')
         return [CLI_API_KEY]
 
     elif os.path.exists(PWD_API_KEYS):
