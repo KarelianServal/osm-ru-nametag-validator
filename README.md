@@ -6,7 +6,7 @@
     2.  [Ручная установка](#org34e414d)
 2.  [Использование](#orgaba5fbf)
     1.  [Overpass API](#org31a380a)
-3.  [Данные](#org6f142d4)
+3.  [Лицензирование](#org6f142d4)
 
 Скрипты для анализ имён озёр России из OpenStreetMap: проверка пяти вариантов конвенций именования (наличие и позиция слова «озеро»).
 
@@ -51,7 +51,7 @@
     lakes-nametag-validator --json            #  выводить озера в формате .json
     lakes-nametag-validator --out-dir <DIR>   # Выбрать директорию для вывода
 
-Каждый скрипт variant<i>.py создаёт фаил variant<i>/<регион>.csv
+Каждый скрипт `variant<i>.py` создаёт фаил `variant<i>/<регион>.csv`
 с именами рек региона, удовлетворяющими условию N.
 
 
@@ -80,7 +80,13 @@
 
 <a id="org6f142d4"></a>
 
-# Данные
-
-© участники OpenStreetMap, данные распространяются по лицензии ODbL.
+# Лицензирование
+- Код проекта распространяется под [GPL-3.0](./LICENSE)
+- Шрифты, использованные в ассетах, распространяются под [OFL 1.1](./zine/assets/fonts/OFL.txt):
+  - "PT Sans": Copyright (c) 2010, [ParaType Ltd.](http://www.paratype.com/public)
+  - "PT Serif": Copyright (c) 2010, [ParaType Ltd.](http://www.paratype.com/public)
+  - "Iosevka": Copyright (c) 2015-2026, Renzhi Li (aka. Belleve Invis,
+belleve@typeof.net)
+- Данные карты распространяются по [лицензии ODbL](https://www.openstreetmap.org/copyright):
+  - Copyright (c) OpenStreetMap contributors
 

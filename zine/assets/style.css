@@ -68,7 +68,7 @@
         local('Sarasa Mono K'),
         local('Sarasa Mono HC'),
         local('Sarasa Mono CL'),
-        url('./fonts/Iosevka-Regular.woff2') format('woff2');
+        url('./fonts/Iosevka-Regular-subset.woff2') format('woff2');
 }   
 /* Text */
 h1,
@@ -76,7 +76,7 @@ h2,
 h3,
 h4 {
     color: var(--text);
-    font-family: "PT Sans";
+    font-family: "PT Sans", sans-serif;
 }
 h1 {
     border-bottom: 2px dashed var(--overlay);

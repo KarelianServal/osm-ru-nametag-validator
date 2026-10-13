@@ -10,6 +10,7 @@
         "background-tile.webp",
         "fonts/PTSans-Regular.woff2",
         "fonts/PTSerif-Regular.woff2",
+        "fonts/Iosevka-Regular-subset.woff2",
     ],
 }),
 
