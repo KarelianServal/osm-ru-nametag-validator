@@ -1,0 +1,255 @@
+:root {
+    /* Catpuccin Mocha palette */
+    --crust    : #11111b ; /* Darkest layer: borders */
+    --mantle   : #181825 ; /* Secondary panels */
+    --base     : rgb(30, 30, 46, 0.9) ; /* Main app background */
+    --surface0 : rgb(49, 50, 68, 0.9) ; /* Slight elevation */
+    --surface1 : rgb(69, 71, 90, 0.9) ; /* Cards, panels */
+    --surface2 : rgb(88, 91, 112,0.2) ; /* Elevated/hover surfaces */
+    --overlay  : #6c7086 ; /* Borders, dividers */
+
+    --subtext0 : #a6adc8 ; /* Muted text */
+    --subtext1 : #bac2de ; /* Sub-headlines, labels */
+    --text     : #cdd6f4 ; /* Primary content */
+
+    --lavender : #b4befe ; /* Inline links, git modific */
+    --blue     : #89b4fa ;
+    --sapphire : #74c7ec ;
+    --sky      : #89dceb ;
+    --teal     : #94e2d5 ;
+    --green    : #a6e3a1 ;
+    --yellow   : #f9e2af ;
+    --peach    : #fab387 ;  /* Warnings */
+    --marroon  : #eba0ac ;
+    --red      : #f38ba8 ; /* Errors */
+    --mauve    : #cba6f7 ;
+    --pink     : #f5c2e7 ;
+    --flamingo : #f2cdcd ;
+    --rosewater: #f5e0dc ;
+
+
+    --red-transparent:   rgb(243, 139, 168, 0.05);
+    --green-transparent: rgb(166, 227, 161, 0.05);
+
+    background-image: url('background-tile.webp') ;
+    background-size: 1200px 700px;   
+}
+@font-face {
+    font-family: "PT Sans";
+    font-weight: 400;
+    font-style: normal;
+    src:
+        local("PT Sans"),
+        local("PTSans-Regular"),
+        url("/fonts/PTSans-Regular.woff2") format("woff2");
+}
+@font-face {
+    font-family: "PT Serif";
+    font-weight: 400;
+    font-style: normal;
+    src:
+        local("PT Serif"),
+        local("PTSerif-Regular"),
+        url("/fonts/PTSerif-Regular.woff2") format("woff2");
+}   
+@font-face {
+    font-family: 'Iosevka';
+    src:
+        local('Iosevka'),
+        local('Iosevka-Regular'),
+        local('Iosevka Slab'),
+        local('Iosevka Term'),
+        local('Iosevka Slab Term'),
+        local('Iosevka Fixed'),
+        local('Iosevka Slab Fixed'),
+        local('Sarasa Mono SC'),
+        local('Sarasa Mono TC'),
+        local('Sarasa Mono J'),
+        local('Sarasa Mono K'),
+        local('Sarasa Mono HC'),
+        local('Sarasa Mono CL'),
+        url('./fonts/Iosevka-Regular.woff2') format('woff2');
+}   
+/* Text */
+h1,
+h2,
+h3,
+h4 {
+    color: var(--text);
+    font-family: "PT Sans";
+}
+h1 {
+    border-bottom: 2px dashed var(--overlay);
+}
+h1,h2 {
+    margin: 0px;
+    padding: 5px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    a { text-decoration: none; }
+}
+h2 { margin-top: 10px; }
+code {
+    color: var(--blue);
+    font-family: "Iosevka", monospace;
+}
+
+b,
+strong {
+    color: var(--text);
+}
+a {
+    color: var(--lavender);
+}
+table a {
+    color: var(--text);
+}
+
+html {
+    font-family: "PT Serif", serif;
+    font-size: 1.3em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: var(--sky);
+}
+body {
+    color: var(--text);
+    background-color: var(--base) ;
+
+    max-width: 1000px;
+    min-width: 300px;
+    overflow-x: scroll;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+header{
+    justify-content: center;
+    text-align: center;
+    border-bottom: 2px dashed var(--overlay);
+    .site-title {
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+    }
+    h1,h2,h5 { margin: 5px; }
+    h1 {
+        font-size: 1.7em;
+        margin: 0px;
+        border: 0;
+    }
+}
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+.content {
+    max-width: 600px;
+    margin:  20px auto;
+}
+img {
+    max-width: 100vw;
+}
+li p { margin: 10px; }
+
+.block {
+    p { margin: 10px; }
+}
+
+.block.quote {
+    background-color: var(--surface2);
+    border-left: 3px dashed var(--sapphire);
+    padding: 5px 15px;
+    margin: 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.block.warning {
+    border: 3px dashed var(--yellow);
+    margin: 20px;
+}
+.block.single-line { p { margin: 2px; } margin: 10px; }
+.block.center {
+    background-color: var(--surface2);
+    max-width: 400px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+
+    margin: 20px auto;
+    p { margin: 10px; }
+}
+.block.padded-bottom { padding-bottom: 15px; }
+
+
+footer {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px dashed var(--overlay);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    a { text-decoration: none; }
+    a:hover { text-decoration: underline; }
+}
+
+
+/* Tables */
+
+td {
+    padding: 2px 7px;
+    overflow-wrap: break-word;
+}
+table {
+    margin: 0 auto;
+}
+table a {
+    text-decoration: none;
+}
+table a:hover {
+    text-decoration: underline;
+}
+table.navigation-table{
+    margin: 0 auto;
+    max-width: 450px;
+    p { margin: 0; display: inline; }
+    td {
+        border: 1px solid var(--overlay);
+        text-align: center;
+        padding: 9px;
+    }
+}
+table.regions-table {
+    max-width: 550px;
+    table-layout: fixed;
+    text-align: center;
+    a { margin: 0; display: inline; }
+    td {
+        border: 1px solid var(--overlay);
+        padding: 9px;
+    }
+    td:nth-child(2) { width: 120px; }
+    td:nth-child(3) { width: 50px; }
+}
+table.valid-lakes-table,
+table.invalid-lakes-table {
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+}
+table.invalid-lakes-table {
+    border: 1px solid var(--peach);
+    background-color: var(--red-transparent);
+}
+table.valid-lakes-table {
+    border: 1px solid var(--teal);
+    background-color: var(--green-transparent);
+}
+

@@ -1,0 +1,55 @@
+<extend template="base.shtml">
+    <head id="head">
+        <style>
+         th:nth-child(5),
+         th:nth-child(6) { width: 145px; }
+         th:nth-child(1) { width: 88px; }
+         th:nth-child(2) { width: 135px; }
+
+         @media (max-width: 900px) {
+             th:nth-child(4),
+             td:nth-child(4) { display: none; }
+         }
+         @media (max-width: 700px) {
+             th:nth-child(1),
+             td:nth-child(1),
+             th:nth-child(2),
+             td:nth-child(2) { display: none; }
+         }
+         @media (max-width: 500px) {
+             th:nth-child(5),
+             td:nth-child(5),
+             th:nth-child(6),
+             td:nth-child(6) { display: none; }
+         }
+        </style>
+    </head>
+    <body id="body">
+        <h1 :text="$page.title"></h1>
+        <div class="content" :html="$page.content()"></div>
+
+        <table class="invalid-lakes-table">
+            <thead>
+                <tr id="tables-first-row">
+                    <th>Type</th>
+                    <th>ID</th>
+                    <th>Tег 'name='</th>
+                    <th>Регион</th>
+                    <th>Широта</th>
+                    <th>Долгота</th>
+                </tr>
+            </thead>
+            <!-- Parse the JSON file and loop over the resulting array -->
+            <tr :loop="$site.asset($page.custom.get('valid_data')).ziggy()">
+                <tr>
+                    <td :text="$loop.it.getOr('@type', 'N/A')"></td>
+                    <td :text="$loop.it.getOr('@id', 'N/A')"></td>
+                    <td :text="$loop.it.getOr('name', 'Unnamed')"></td>
+                    <td :text="$loop.it.getOr('region', 'Unknown')"></td>
+                    <td :text="$loop.it.getOr('@lat', 'N/A')"></td>
+                    <td :text="$loop.it.getOr('@lon', 'N/A')"></td>
+                </tr>
+            </tr>
+        </table>
+
+    </body>

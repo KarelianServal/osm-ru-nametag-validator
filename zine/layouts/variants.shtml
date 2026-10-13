@@ -1,0 +1,27 @@
+<extend template="base.shtml">
+    <head id="head">
+        <style>
+         @media (max-width: 400px) {
+             th:nth-child(3),
+             td:nth-child(3) { display: none; }
+         }
+        </style>
+    </head>
+
+    <body id="body">
+        <h1 :text="$page.title"></h1>
+        <div class="content" :html="$page.content()"></div>
+        <table class="regions-table">
+            <tr :loop="$site.asset('out/iso-codes.json').ziggy()">
+                <tr>
+                    <td><a href="$site.page($loop.it.get('iso').prefix('variants/', $page.custom.get('variant'), '/')).link()">
+                        <span :text="$loop.it.get('name')"></span></a></td>
+                    <td><a href="$site.page($loop.it.get('iso').prefix('variants/', $page.custom.get('variant'), '/')).link()">
+                        <span :text="$site.asset('out/stats.json').ziggy().get('variant').get($page.custom.get('variant')).get('region').get($loop.it.get('name')).get('amount')"></span> /
+                        <span :text="$site.asset('out/stats.json').ziggy().get('names_amount').get('region').get($loop.it.get('name'))"></span></a></td>
+                    <td><span :text="$site.asset('out/stats.json').ziggy().get('variant').get($page.custom.get('variant')).get('region').get($loop.it.get('name')).get('pct')"></span>%</td>
+                </tr>
+            </tr>
+        </table>   
+
+    </body>

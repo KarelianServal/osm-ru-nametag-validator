@@ -1,0 +1,35 @@
+<extend template="base.shtml">
+    <head id="head">
+        <style>
+         .content{
+             text-align: center;
+         }
+        </style>
+    </head>
+    <body id="body">
+
+        <div class="block warning center">
+            <p>Валидатор находится в альфа-тестировании и содержит ошибки.</p>
+            <p>Если вы нашли одну (или несколько) - пожалуйста, <a href='https://github.com/KarelianServal/osm-ru-nametag-validator/issues'>сообщите о ней.</a></p>
+        </div>
+
+        <table class="navigation-table">
+            <tr>
+                <td><a href="$site.page('variants/exceptions').link()">Исключения</a></td>
+                <td><a href="$site.page('variants/exceptions').link()">
+                    <span :text="$site.asset('out/stats.json').ziggy().get('exceptions').get('amount')"></span> /
+                    <span :text="$site.asset('out/stats.json').ziggy().get('names_amount').get('all')"></span></a></td>
+                <td><span :text="$site.asset('out/stats.json').ziggy().get('exceptions').get('pct')"></span>%</td></tr>
+            <tr :loop="$site.asset('out/stats.json').ziggy().get('variant').iterate()">
+                <tr>
+                    <td><a href="$loop.it.key.prefix('variants/')">Вариант <span :text="$loop.it.key"></span></a></td>
+                    <td><a href="$loop.it.key.prefix('variants/')">
+                        <span :text="$loop.it.value.get('amount')"></span> /
+                        <span :text="$site.asset('out/stats.json').ziggy().get('names_amount').get('legal')"></span></a></td>
+                    <td><span :text="$loop.it.value.get('pct')"></span>%</td></tr></tr>   
+        </table>
+
+        <div class="content" :html="$page.content()"></div>
+
+
+    </body>

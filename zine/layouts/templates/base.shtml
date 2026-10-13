@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head id="head">
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1">
+        <title :text="$site.title"></title>
+        <link rel="icon" href="$site.asset('favicon.png').link()" type="image/png" sizes="48x48">
+        <link type="text/css" rel="stylesheet" href="$site.asset('style.css').link()">
+        <super>
+    </head>
+    <body id="body"> <header>
+            <div class="site-title">
+                <h1><a href="$site.page('').link()" :text="$site.title"></a></h1>   
+                <h5 class="version"><a href="https://github.com/KarelianServal/osm-ru-nametag-validator" :text="$site.asset('out/stats.json').ziggy().get('version').prefix('(').suffix(')')"></a></h5>   
+            </div>
+
+            <h5 :text="$site.asset('out/stats.json').ziggy().get('update_time').prefix('Последнее обновление: ')"></h5>   
+        </header>
+        <super>
+            <footer>
+                <div><a href="https://www.openstreetmap.org/copyright">&#169; OpenStreetMap contributors, ODbL 1.0</a>
+                </div>
+            </footer>
+    </body>
+</html>

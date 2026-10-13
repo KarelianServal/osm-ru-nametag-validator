@@ -11,6 +11,9 @@ ru-lakes.csv
 variant*.csv
 API_KEYS.txt
 
+# zine pages
+zine/content/variants/*/*
+
 # org-mode files [https://github.com/github/markup/issues/2105]
 *.org
 
