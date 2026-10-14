@@ -9,5 +9,5 @@ import re
 pattern = re.compile(r'^.*\b(озеро|озера|озёра)\b.*$')
 
 
-def is_variant5(lake_name):
-    return lake_name and not pattern.match(lake_name)
+def is_variant5(lake_name: str) -> bool:
+    return bool(lake_name and not pattern.match(lake_name))

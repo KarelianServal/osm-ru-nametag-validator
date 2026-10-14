@@ -1,4 +1,6 @@
 import json
+from typing import Any
+
 import importlib.metadata
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -8,14 +10,16 @@ from .iso_codes import iso_codes
 TZ = ZoneInfo("Europe/Moscow")
 __version__ = importlib.metadata.version("osm-ru-nametag-validator")
 
-stats = {
+stats: dict[str, Any] = {
     "update_time": datetime.now(TZ).strftime("%d/%m/%Y %H:%M:%S"),
-    "version": __version__.split(".dev")[0] + ".dev" if ".dev" in __version__ else __version__,
+    "version": __version__.split(".dev")[0] + ".dev" if ".dev"
+    in __version__ else __version__,
 
     "names_amount": {
         "all": 0,
         "legal": 0,
-        "region": {item["name"]: 0 for item in iso_codes}
+        "region": {item["name"]: 0 for item
+                   in iso_codes}
     },
 
     "exceptions": {"amount": 0, "pct": 0},
@@ -24,14 +28,15 @@ stats = {
         i: {
             "amount": 0,
             "pct": 0,
-            "region": {item["name"]: {"amount": 0, "pct": 0} for item in iso_codes}
+            "region": {item["name"]: {"amount": 0, "pct": 0} for item
+                       in iso_codes}
         }
         for i in range(1, 6)
     }
 }
 
 
-def _get_pcts():
+def _get_pcts() -> None:
     anames = stats["names_amount"]["all"]
     lnames = stats["names_amount"]["legal"]
 
@@ -50,7 +55,7 @@ def _get_pcts():
             var["region"][name]["pct"] = rpct
 
 
-def _write_iso_codes(ISO_CODES_DATA, REGIONS_DATA):
+def _write_iso_codes(ISO_CODES_DATA: str, REGIONS_DATA: str) -> None:
     counts = stats["names_amount"]["region"]
     iso_codes.sort(key=lambda x: counts.get(x["name"], 0), reverse=True)
 
@@ -58,7 +63,11 @@ def _write_iso_codes(ISO_CODES_DATA, REGIONS_DATA):
         json.dump(iso_codes, f, ensure_ascii=False, indent=2)
 
 
-def write_stats(STATS_FILE, ISO_CODES_DATA, REGIONS_DATA):
+def write_stats(
+        STATS_FILE: str,
+        ISO_CODES_DATA: str,
+        REGIONS_DATA: str
+) -> None:
     _write_iso_codes(ISO_CODES_DATA, REGIONS_DATA)
     _get_pcts()
 

@@ -21,18 +21,18 @@ MASK_RE = re.compile(
 )
 
 
-def _short(s):
+def _short(s: str) -> str:
     return s[:4] + "…" if len(s) > 8 else "***"
 
 
-def mask_key(key):
+def mask_key(key: str) -> str:
     return MASK_RE.sub(
         lambda m: _short(m.group(1)) if m.group(1) is not None else m.group(0),
         key
     )
 
 
-def get_api_keys(CLI_API_KEY):
+def get_api_keys(CLI_API_KEY: str) -> list[str]:
     if CLI_API_KEY:
         mask = mask_key(CLI_API_KEY)
         print(f'{GREEN}Получен API ключ ({mask}){RESET}')
@@ -49,4 +49,6 @@ def get_api_keys(CLI_API_KEY):
         return PUB_API_KEYS
 
     else:
-        sys.exit(f'{RED}Ошибка: API Overpass (API_KEYS.txt) не найдены.{RESET}')
+        sys.exit(f'{RED}'
+                 'Ошибка: API Overpass (API_KEYS.txt) не найдены.'
+                 '{RESET}')

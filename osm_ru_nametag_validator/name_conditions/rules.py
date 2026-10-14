@@ -8,7 +8,7 @@ morph = MorphAnalyzer()
 noun_patterns = re.compile(r'(ын)$')
 
 
-def is_gent(word, tokens):
+def _is_gent(word: MorphAnalyzer.Parse, tokens: list[str]) -> bool:
     # Workaround for "Две Сестры" cases
     if len(tokens) == 1:
         return True
@@ -16,12 +16,12 @@ def is_gent(word, tokens):
         second_word = morph.parse(tokens[-2])[0]
 
         if second_word.tag.POS == 'NUMR':
-            return word.tag.number == 'plur'
+            return bool(word.tag.number == 'plur')
         else:
-            return word.tag.number == second_word.tag.number
+            return bool(word.tag.number == second_word.tag.number)
 
 
-def name_type(tokens):
+def name_type(tokens: list[str]) -> str:
     word = tokens[-1]
 
     if morph.word_is_known(word):
@@ -35,7 +35,7 @@ def name_type(tokens):
             if p.tag.POS == 'ADJS':
                 return 'substant'
             if p.tag.POS == 'NOUN' and p.tag.case == 'gent':
-                if is_gent(p, tokens):
+                if _is_gent(p, tokens):
                     return 'gent'
 
     if noun_patterns.search(word):
@@ -45,7 +45,7 @@ def name_type(tokens):
         if p.tag.POS == 'NOUN' and 'Geox' in p.tag:
             return 'substant'
         if 'Surn' in p.tag and p.tag.case == 'gent':
-            if is_gent(p, tokens):
+            if _is_gent(p, tokens):
                 return 'gent'
         if (p.tag.POS == 'ADJF'
                 and 'Fixd' not in p.tag):

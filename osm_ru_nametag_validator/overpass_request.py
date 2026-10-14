@@ -11,10 +11,11 @@ from .api_keys import mask_key
 retries = 5  # Times to try to query an API
 pause = 20   # Timeout between attempts
 
-HEADERS = {'User-Agent': f'lakes-nametag-validator/{stats["version"]} (https://github.com/KarelianServal/osm-ru-nametag-validator)'}
+HEADERS = {'User-Agent': f'lakes-nametag-validator/{stats["version"]}'
+           '(https://github.com/KarelianServal/osm-ru-nametag-validator)'}
 
 
-def _spin(stop):
+def _spin(stop: threading.Event) -> None:
     if not sys.stdout.isatty():
         return
 
@@ -22,17 +23,21 @@ def _spin(stop):
     start = time.time()
     while not stop.is_set():
         elapsed = int(time.time() - start)
-        sys.stdout.write(f'\r {frames[int(time.time()*10) % len(frames)]} [{elapsed}с] Ожидаем ответа...')
+        sys.stdout.write(f'\r {frames[int(time.time()*10) % len(frames)]}'
+                         f'[{elapsed}с] Ожидаем ответа...')
         sys.stdout.flush()
         stop.wait(0.1)
 
 
-def _clear_spin():
+def _clear_spin() -> None:
     sys.stdout.write('\r' + ' ' * 30 + '\r')
     sys.stdout.flush()
 
 
-def overpass_request(OVERPASS_ENDPOINTS,  QUERY):
+def overpass_request(
+        OVERPASS_ENDPOINTS: list[str],
+        QUERY: str
+) -> requests.Response:
     for url in OVERPASS_ENDPOINTS:
         mask = mask_key(url)
         print(f' | Пробуем зеркало ({mask})...')
@@ -62,7 +67,8 @@ def overpass_request(OVERPASS_ENDPOINTS,  QUERY):
                     raise ValueError(f"Слишком короткий ответ: '{text}'")
 
                 if "<!DOCTYPE html>" in text or "<html>" in text.lower():
-                    raise ValueError("Сервер вернул HTML страницу ошибки вместо данных")
+                    raise ValueError('Сервер вернул HTML страницу ошибки'
+                                     'вместо данных')
 
                 time.sleep(4)
                 return response
@@ -73,7 +79,8 @@ def overpass_request(OVERPASS_ENDPOINTS,  QUERY):
                 _clear_spin()
                 print(f' | | {RED}{e}{RESET}')
                 if attempt < retries:
-                    print(f' | | {RED}Повторная попытка через {pause} с...{RESET}')
+                    print(f' | | {RED}Повторная попытка через {pause} с...'
+                          '{RESET}')
                     time.sleep(pause)
 
     sys.exit(

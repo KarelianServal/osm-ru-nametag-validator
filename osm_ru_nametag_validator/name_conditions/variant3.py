@@ -28,7 +28,7 @@ OZERO = {'озеро', 'озера', 'озёра'}
 COMP = re.compile(r'\b(?!оз[её]р[оа]\b).*[оО][зЗ][еёЕЁ][рР].*\b')
 
 
-def matches(name):
+def _matches(name: str) -> bool:
     tokens = TOKEN.findall(name.strip())
     has_compound = any(COMP.search(t) for t in tokens)
 
@@ -51,5 +51,5 @@ def matches(name):
     return False
 
 
-def is_variant3(lake_name):
-    return lake_name and matches(lake_name)
+def is_variant3(lake_name: str) -> bool:
+    return bool(lake_name and _matches(lake_name))

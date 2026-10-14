@@ -17,17 +17,18 @@ LAKES_DATA = os.path.join(DATA_DIR, 'ru-lakes.csv')
 REGIONS_DATA = os.path.join(DATA_DIR, 'ru-regions.geojson')
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-                description=textwrap.dedent("""
-                Анализ тега [name=] озёр из OSM.
-                https://community.openstreetmap.org/t/name/148024
-                """),
-                formatter_class=argparse.RawDescriptionHelpFormatter
-             )
+        description=textwrap.dedent("""
+        Анализ тега [name=] озёр из OSM.
+        https://community.openstreetmap.org/t/name/148024
+        """),
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
 
     parser.add_argument('--api', default=os.environ.get("API_KEY"),
-                        help='использовать выбранный API ключ для запроса Overpass')
+                        help='использовать выбранный API ключ для запроса'
+                        'Overpass')
     parser.add_argument('--local', action='store_true',
                         help='не скачивать озера, использовать локальный CSV')
     parser.add_argument('--refresh', action='store_true',
@@ -49,7 +50,7 @@ def parse_args():
     return args
 
 
-def main():
+def main() -> None:
     args = parse_args()
 
     if args.out_dir:
@@ -69,18 +70,21 @@ def main():
         dir_name = os.path.dirname(REGIONS_DATA)
         if dir_name:
             os.makedirs(dir_name, exist_ok=True)
+
         download_regions(API, REGIONS_DATA)
     else:
         print(f'Найдены данные регионов [{REGIONS_DATA}]')
 
     if args.local:
         if not os.path.exists(LAKES_DATA):
-            sys.exit(f'{RED}Ошибка: локальный файл {LAKES_DATA} не найден.{RESET}')
+            sys.exit(f'{RED}Ошибка: локальный файл {LAKES_DATA} не найден.'
+                     '{RESET}')
 
     elif args.refresh or not os.path.exists(LAKES_DATA):
         dir_name = os.path.dirname(LAKES_DATA)
         if dir_name:
             os.makedirs(dir_name, exist_ok=True)
+
         download_lakes(API, LAKES_DATA, REGIONS_DATA)
     else:
         print(f'Найдены данные озер [{LAKES_DATA}]')

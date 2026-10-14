@@ -1,7 +1,7 @@
 import geopandas
 
 
-def _load_regions(REGIONS_DATA):
+def _load_regions(REGIONS_DATA: str) -> geopandas.DataFrame:
     regions = geopandas.read_file(REGIONS_DATA)
 
     if regions.crs is None:
@@ -27,7 +27,8 @@ def _load_regions(REGIONS_DATA):
     return regions[["region", "geometry"]]
 
 
-def attach_regions(lakes_df, REGIONS_DATA):
+def attach_regions(lakes_df: geopandas.DataFrame,
+                   REGIONS_DATA: str) -> geopandas.DataFrame:
     lakes_df = lakes_df.dropna(subset=["@lat", "@lon"]).copy()
     lakes_gdf = geopandas.GeoDataFrame(
         lakes_df,

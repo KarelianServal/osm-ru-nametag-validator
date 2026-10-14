@@ -23,7 +23,7 @@ TOKEN = re.compile(r'(?<![()\w-])[а-яА-ЯёЁ]+(?:-[а-яА-ЯёЁ0-9]+)*(?![
 OZERO = {'озеро', 'озера', 'озёра'}
 
 
-def matches(name):
+def _matches(name: str) -> bool:
     tokens = TOKEN.findall(name.strip())
 
     if any(t in OZERO for t in tokens):
@@ -40,5 +40,5 @@ def matches(name):
     return False
 
 
-def is_variant2(lake_name):
-    return lake_name and matches(lake_name)
+def is_variant2(lake_name: str) -> bool:
+    return bool(lake_name and _matches(lake_name))

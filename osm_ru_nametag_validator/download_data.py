@@ -1,6 +1,7 @@
 from io import StringIO
-from pandas import read_csv
+from typing import Any
 
+from pandas import read_csv
 import geopandas
 
 from shapely.errors import GEOSException
@@ -31,12 +32,11 @@ out center;
 '''
 
 
-def _relation_to_feature(rel):
+def _relation_to_feature(rel: dict[str, Any]) -> dict[str, Any] | None:
     rel_id = rel.get("id", "?")
 
-    def skip(reason):
+    def skip(reason: str) -> None:
         print(f"{RED}[SKIP] Relation {rel_id}: {reason}{RESET}")
-        return None
 
     outer, inner = [], []
 
@@ -57,12 +57,14 @@ def _relation_to_feature(rel):
             outer.append(line)
 
     if not outer:
-        return skip("нет внешних линий")
+        skip("нет внешних линий")
+        return None
 
     outer_polys = list(polygonize(unary_union(outer))) if outer else []
 
     if not outer_polys:
-        return skip(f"0 полигонов из {len(outer)} линий")
+        skip(f"0 полигонов из {len(outer)} линий")
+        return None
 
     try:
         geometry = unary_union(outer_polys)
@@ -73,17 +75,20 @@ def _relation_to_feature(rel):
         if inner_polys:
             geometry = geometry.difference(unary_union(inner_polys))
     except GEOSException as e:
-        return skip(f"ошибка GEOS: {e}")
+        skip(f"ошибка GEOS: {e}")
+        return None
 
     if geometry.is_empty:
-        return skip("итоговая геометрия пуста (difference убрал полигоны?)")
+        skip("итоговая геометрия пуста (difference убрал полигоны?)")
+        return None
 
     if geometry.geom_type not in ("Polygon", "MultiPolygon"):
         polys = [g for g in getattr(geometry, "geoms", [])
                  if g.geom_type in ("Polygon", "MultiPolygon")]
 
         if not polys:
-            return skip(f"тип {geometry.geom_type}")
+            skip(f"тип {geometry.geom_type}")
+            return None
         geometry = unary_union(polys)
 
     return {
@@ -93,7 +98,7 @@ def _relation_to_feature(rel):
     }
 
 
-def download_regions(API, REGIONS_DATA):
+def download_regions(API: list[str], REGIONS_DATA: str) -> None:
     print('Загрузка регионов с Overpass (может занять несколько минут)...')
 
     regions_data = overpass_request(API, REGIONS_QUERY).json()
@@ -135,7 +140,7 @@ def download_regions(API, REGIONS_DATA):
     print(f'{GREEN}Сохранены геоданные регионов: {REGIONS_DATA}{RESET}')
 
 
-def download_lakes(API, LAKES_DATA, REGIONS_DATA):
+def download_lakes(API: list[str], LAKES_DATA: str, REGIONS_DATA: str) -> None:
     print('Загрузка озер с Overpass (может занять несколько минут)...')
     result = overpass_request(API, LAKES_QUERY).content.decode("utf-8")
 
@@ -147,7 +152,7 @@ def download_lakes(API, LAKES_DATA, REGIONS_DATA):
     lakes_df = read_csv(StringIO(result), sep=';')
     lakes_df = lakes_df.dropna(subset=["@lat", "@lon"]).copy()
 
-    print(f'Находим их регионы...')
+    print('Находим их регионы...')
     lakes_data = attach_regions(lakes_df, REGIONS_DATA)
 
     lakes_data.to_csv(LAKES_DATA,
