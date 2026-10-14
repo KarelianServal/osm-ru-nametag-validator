@@ -22,11 +22,17 @@ Issues = "https://github.com/KarelianServal/OSM-ru-nametag-validator/issues"
 [project.scripts]
 lakes-nametag-validator = "osm_ru_nametag_validator.__main__:main"
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "mypy>=2.4.0",
+]
+
 [tool.setuptools.packages.find]
 include = [ "osm_ru_nametag_validator*" ]
 
 [dependency-groups]
-dev = ["pytest>=8", "mypy>=1.10"]
+dev = ["pytest>=8", "mypy>=2.4.0"]
 
 [tool.pytest.ini_options]
 testpaths=["tests"]

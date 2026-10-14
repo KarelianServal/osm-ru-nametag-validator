@@ -94,7 +94,7 @@ non_valid_variant1_names = [
 ]
 
 
-def test_is_variant1():
+def test_is_variant1() -> None:
     for name in valid_variant1_names:
         assert is_variant1(name)
     for name in non_valid_variant1_names:

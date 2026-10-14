@@ -61,11 +61,11 @@ non_valid_exceptions = [
 ]
 
 
-def test_is_exception():
+def test_is_exception() -> None:
     for name in valid_exceptions:
-        assert is_exception(0, 0, name)
+        assert is_exception('0', 0, name)
     for name in non_valid_exceptions:
-        assert not is_exception(0, 0, name)
+        assert not is_exception('0', 0, name)
 
-    assert is_exception(0, 0, '149TEst.$%#№')
-    assert not is_exception('relation', '2650915', '149TEst.$%#№')
+    assert is_exception('0', 0, '149TEst.$%#№')
+    assert not is_exception('relation', 2650915, '149TEst.$%#№')

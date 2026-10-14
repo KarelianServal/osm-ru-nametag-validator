@@ -44,11 +44,11 @@ invalid_gent = [
     'Малое Кис-Кис',
     'Худагтай',
 ]
-valid_noun = [
-]
+# valid_noun = [
+# ]
 
 
-def test_rules():
+def test_rules() -> None:
     for word in valid_substant:
         assert name_type([word]) == 'substant'
     for word in valid_adjf:
