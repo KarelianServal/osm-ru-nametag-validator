@@ -1,27 +1,21 @@
 import os
-import csv
-import json
-from typing import Any
 from collections import defaultdict
 from collections.abc import Callable
 
 from .name_conditions import VARIANTS
 from .name_conditions.exceptions import is_exception
+from .names_io import read_csv, write_csv, write_json
 
 from .statistics import stats
 
-
-def _count_names(path: str) -> int:
-    with open(path, encoding='utf-8-sig') as f:
-        return sum(
-            1 for row in csv.DictReader(f, delimiter=';')
-            if (row.get('name') or '').strip()
-        )
+type dataRow = tuple[str, int, str, str, str, str]
 
 
-def _find_regions_amount(
-        data: list[tuple[str, int, str, str, str, str]]
-) -> None:
+def _pct(some: int, all: int) -> int:
+    return round(some / all * 100) if all else 0
+
+
+def _find_regions_amount(data: list[dataRow]) -> None:
     groups = defaultdict(list)
     for row in data:
         region = row[3]
@@ -31,176 +25,71 @@ def _find_regions_amount(
         stats["names_amount"]["region"][region] = len(rows)
 
 
-def read_csv(
-        INPUT: str,
-        condition: Callable[[str, int, str], bool]
-) -> tuple[int,
-           list[tuple[str, int, str, str, str, str]],
-           list[tuple[str, int, str, str, str, str]]]:
-    count = 0
-    valid_result = []
-    invalid_result = []
-
-    with open(INPUT, encoding='utf-8-sig') as f:
-        for row in csv.DictReader(f, delimiter=';'):
-            osm_type = (row.get('@type') or '').strip()
-            osm_id = int((row.get('@id') or '').strip())
-            osm_name = (row.get('name') or '').strip()
-            osm_region = (row.get('region') or '').strip()
-            osm_lat = (row.get('@lat') or '').strip()
-            osm_lon = (row.get('@lon') or '').strip()
-
-            if condition(osm_type, osm_id, osm_name):
-                count += 1
-                valid_result.append((osm_type,
-                                     osm_id,
-                                     osm_name,
-                                     osm_region,
-                                     osm_lat,
-                                     osm_lon))
-            else:
-                invalid_result.append((osm_type,
-                                       osm_id,
-                                       osm_name,
-                                       osm_region,
-                                       osm_lat,
-                                       osm_lon))
-    return count, valid_result, invalid_result
-
-
-def read_valid_names(
-        data: list[tuple[str, int, str, str, str, str]],
+def _find_valid_names(
+        data: list[dataRow],
         condition: Callable[[str], bool]
-) -> tuple[int,
-           list[tuple[str, int, str, str, str, str]],
-           list[tuple[str, int, str, str, str, str]]]:
-    count = 0
-    valid_result = []
-    invalid_result = []
+) -> tuple[int, list[dataRow], list[dataRow]]:
+    valid: list[dataRow] = []
+    invalid: list[dataRow] = []
 
-    for osm_type, osm_id, name, region, lat, lon in data:
-        if condition(name):
-            count += 1
-            valid_result.append((osm_type,
-                                 osm_id,
-                                 name,
-                                 region,
-                                 lat,
-                                 lon))
-        else:
-            invalid_result.append((osm_type,
-                                   osm_id,
-                                   name,
-                                   region,
-                                   lat,
-                                   lon))
-    return count, valid_result, invalid_result
+    for row in data:
+        (valid if condition(row[2]) else invalid).append(row)
+
+    return len(valid), valid, invalid
 
 
-def write_csv(
-        data: list[tuple[str, int, str, str, str, str]],
-        OUTPUT_DIR: str,
-        var: Any
-) -> None:
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
+def _find_exceptions(
+        data: list[dataRow]
+) -> tuple[int, list[dataRow], list[dataRow]]:
+    valid: list[dataRow] = []
+    invalid: list[dataRow] = []
 
-    if var == 'exceptions':
-        path = os.path.join(OUTPUT_DIR, "exceptions.csv")
-        with open(path, 'w', encoding='utf-8', newline='') as f:
-            writer = csv.writer(f, delimiter=';')
-            writer.writerow(['@type', '@id', 'name', 'region', '@lat', '@lon'])
-            writer.writerows(data)
+    for row in data:
+        (valid if is_exception(row[0], row[1], row[2])
+         else invalid).append(row)
 
-    else:
-        groups = defaultdict(list)
-        for row in data:
-            region = row[3]
-            groups[region].append(row)
-
-        for region, rows in groups.items():
-            if region and var:
-                stats["variant"][var]["region"][region]["amount"] = len(rows)
-
-            safe_name = region.replace('/', '_').replace('\\', '_')
-            path = os.path.join(OUTPUT_DIR, f"{safe_name}.csv")
-            with open(path, 'w', encoding='utf-8', newline='') as f:
-                writer = csv.writer(f, delimiter=';')
-                writer.writerow(
-                    ['@type', '@id', 'name', 'region', '@lat', '@lon']
-                )
-                writer.writerows(rows)
+    return len(valid), valid, invalid
 
 
-def write_json(
-        data: list[tuple[str, int, str, str, str, str]],
-        OUTPUT_DIR: str,
-        var: Any
-) -> None:
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
+def name_checker(INPUT: str, OUTPUT_DIR: str, is_json: bool) -> None:
+    total_amount, all_names = read_csv(INPUT)
 
-    headers = ['@type', '@id', 'name', 'region', '@lat', '@lon']
-
-    if var == 'exceptions':
-        path = os.path.join(OUTPUT_DIR, "exceptions.json")
-        records = [dict(zip(headers, row)) for row in data]
-        with open(path, 'w', encoding='utf-8') as f:
-            json.dump(records, f, indent=4, ensure_ascii=False)
-
-    else:
-        groups = defaultdict(list)
-        for row in data:
-            region = row[3]
-            groups[region].append(row)
-
-        for region, rows in groups.items():
-            if region and var:
-                stats["variant"][var]["region"][region]["amount"] = len(rows)
-
-            safe_name = region.replace('/', '_').replace('\\', '_')
-            path = os.path.join(OUTPUT_DIR, f"{safe_name}.json")
-            records = [dict(zip(headers, row)) for row in rows]
-            with open(path, 'w', encoding='utf-8') as f:
-                json.dump(records, f, indent=4, ensure_ascii=False)
-
-
-def name_checker(INPUT: str, OUT_DIR: str, is_json: bool) -> None:
-    total = _count_names(INPUT)
-    stats["names_amount"]["all"] = total
-
+    # Exceptions
     (exceptions_amount,
-     valid_exceptions,
-     valid_names) = read_csv(INPUT, is_exception)
+     exceptions,
+     valid_names) = _find_exceptions(all_names)
 
     if is_json:
-        write_json(valid_exceptions, OUT_DIR, 'exceptions')
+        write_json(exceptions, OUTPUT_DIR, 'exceptions')
     else:
-        write_csv(valid_exceptions, OUT_DIR, 'exceptions')
+        write_csv(exceptions, OUTPUT_DIR, 'exceptions')
 
-    pct = round(exceptions_amount / total * 100) if total else 0
-    print(f'Исключения: {exceptions_amount}/{total} ({pct}%)')
+    pct = _pct(exceptions_amount, total_amount)
+    print(f'Исключения: {exceptions_amount}/{total_amount} ({pct}%)')
     stats["exceptions"]["amount"] = exceptions_amount
 
-    legal = total - exceptions_amount
-    stats["names_amount"]["legal"] = legal
+    valid_amount = total_amount - exceptions_amount
+    stats["names_amount"]["legal"] = valid_amount
 
+    # Stats
     _find_regions_amount(valid_names)
 
-    for i, is_variant in enumerate(VARIANTS, start=1):
-        (valid_names_amount,
-         valid_data,
-         invalid_data) = read_valid_names(valid_names, is_variant)
+    # Variants
+    for var, is_variant in enumerate(VARIANTS, start=1):
+        (var_amount,
+         var_valid_names,
+         var_invalid_names) = _find_valid_names(valid_names,
+                                                is_variant)
+        pct = _pct(var_amount, valid_amount)
+        print(f'Условие {var}: {var_amount}/{valid_amount} ({pct}%)')
+        stats["variant"][var]["amount"] = var_amount
 
-        VARIANT_DIR = [os.path.join(OUT_DIR, f'valid-variant{i}'),
-                       os.path.join(OUT_DIR, f'invalid-variant{i}')]
+        variant_dir = [os.path.join(OUTPUT_DIR, f'valid-variant{var}'),
+                       os.path.join(OUTPUT_DIR, f'invalid-variant{var}')]
 
         if is_json:
-            write_json(valid_data, VARIANT_DIR[0], i)
-            write_json(invalid_data, VARIANT_DIR[1], None)
+            write_json(var_valid_names, variant_dir[0], var)
+            write_json(var_invalid_names, variant_dir[1], None)
         else:
-            write_csv(valid_data, VARIANT_DIR[0], i)
-            write_csv(invalid_data, VARIANT_DIR[1], None)
-
-        pct = round(valid_names_amount / legal * 100) if legal else 0
-        print(f'Условие {i}: {valid_names_amount}/{legal} ({pct}%)')
-
-        stats["variant"][i]["amount"] = valid_names_amount
+            write_csv(var_valid_names, variant_dir[0], var)
+            write_csv(var_invalid_names, variant_dir[1], None)

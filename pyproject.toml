@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "osm-ru-nametag-validator"
 dynamic = ["version"]
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [ "pymorphy3>=2.0",
                  "requests>=2.31",
                  "geopandas>=1.0",
