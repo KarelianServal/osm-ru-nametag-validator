@@ -3,10 +3,11 @@ import textwrap
 import os
 import sys
 
-from .api_keys import get_api_keys
-from .download_data import download_lakes, download_regions
+from .constants.cli_colors import RED, RESET
+
+from .download_data.api_keys import get_api_keys
+from .download_data.download_data import download_lakes, download_regions
 from .name_checker import name_checker
-from .cli_colors import RED, RESET
 
 from .statistics import write_stats
 

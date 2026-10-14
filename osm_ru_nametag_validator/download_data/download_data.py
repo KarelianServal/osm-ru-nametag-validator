@@ -8,8 +8,8 @@ from shapely.errors import GEOSException
 from shapely.geometry import LineString, mapping
 from shapely.ops import polygonize, unary_union
 
+from ..constants.cli_colors import RED, GREEN, RESET
 
-from .cli_colors import RED, GREEN, RESET
 from .overpass_request import overpass_request
 from .calculate_regions import attach_regions
 

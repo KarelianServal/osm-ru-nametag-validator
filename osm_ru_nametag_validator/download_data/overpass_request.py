@@ -4,8 +4,9 @@ import threading
 
 import requests
 
-from .cli_colors import RED, RESET
-from .statistics import stats
+from ..constants.cli_colors import RED, RESET
+
+from ..statistics import stats
 from .api_keys import mask_key
 
 retries = 5  # Times to try to query an API

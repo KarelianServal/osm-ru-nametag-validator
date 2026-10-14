@@ -2,7 +2,7 @@ import os
 import sys
 import re
 
-from .cli_colors import GREEN, RED, RESET
+from ..constants.cli_colors import GREEN, RED, RESET
 
 PWD_API_KEYS = 'API_KEYS.txt'
 

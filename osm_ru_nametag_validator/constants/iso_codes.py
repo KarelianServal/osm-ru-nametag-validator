@@ -1,4 +1,4 @@
-iso_codes: list[dict[str, str]] = [
+ISO_CODES: list[dict[str, str]] = [
     {
         "name": "Карелия",
         "iso": "RU-KR"

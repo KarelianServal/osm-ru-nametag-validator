@@ -5,7 +5,7 @@ import importlib.metadata
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from .iso_codes import iso_codes
+from .constants.iso_codes import ISO_CODES
 
 TZ = ZoneInfo("Europe/Moscow")
 __version__ = importlib.metadata.version("osm-ru-nametag-validator")
@@ -19,7 +19,7 @@ stats: dict[str, Any] = {
         "all": 0,
         "legal": 0,
         "region": {item["name"]: 0 for item
-                   in iso_codes}
+                   in ISO_CODES}
     },
 
     "exceptions": {"amount": 0, "pct": 0},
@@ -29,7 +29,7 @@ stats: dict[str, Any] = {
             "amount": 0,
             "pct": 0,
             "region": {item["name"]: {"amount": 0, "pct": 0} for item
-                       in iso_codes}
+                       in ISO_CODES}
         }
         for i in range(1, 6)
     }
@@ -46,7 +46,7 @@ def _get_pcts() -> None:
     for var in stats["variant"].values():
         var["pct"] = round(var["amount"] / lnames * 100) if lnames else 0
 
-        for r in iso_codes:
+        for r in ISO_CODES:
             name = r["name"]
             areg_names = stats["names_amount"]["region"][name]
             reg_amount = var["region"][name]["amount"]
@@ -57,10 +57,10 @@ def _get_pcts() -> None:
 
 def _write_iso_codes(ISO_CODES_DATA: str, REGIONS_DATA: str) -> None:
     counts = stats["names_amount"]["region"]
-    iso_codes.sort(key=lambda x: counts.get(x["name"], 0), reverse=True)
+    ISO_CODES.sort(key=lambda x: counts.get(x["name"], 0), reverse=True)
 
     with open(ISO_CODES_DATA, "w") as f:
-        json.dump(iso_codes, f, ensure_ascii=False, indent=2)
+        json.dump(ISO_CODES, f, ensure_ascii=False, indent=2)
 
 
 def write_stats(
