@@ -4,11 +4,7 @@
         </style>
     </head>
     <body id="body">
-
-        <div class="block warning center">
-            <p>Валидатор находится в альфа-тестировании и содержит ошибки.</p>
-            <p>Если вы нашли одну (или несколько) - пожалуйста, <a href='https://github.com/KarelianServal/osm-ru-nametag-validator/issues'>сообщите о ней.</a></p>
-        </div>
+        <div class="index content" :html="$page.content()"></div>
 
         <table class="navigation-table">
             <tr>
@@ -26,7 +22,8 @@
                     <td><span :text="$loop.it.value.get('pct')"></span>%</td></tr></tr>   
         </table>
 
-        <div class="index content" :html="$page.content()"></div>
-
-
+        <div class="block warning center">
+            <p>Валидатор находится в бете и содержит ошибки.</p>
+            <p>Если вы нашли одну (или несколько) - пожалуйста, <a href='https://github.com/KarelianServal/osm-ru-nametag-validator/issues'>сообщите о ней.</a></p>
+        </div>
     </body>
