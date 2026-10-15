@@ -23,17 +23,24 @@ def read_csv(INPUT: str) -> tuple[int, list[dataRow]]:
     return i, data
 
 
+def _csv_file_writer(data: list[dataRow], path: str) -> None:
+    with open(path, 'w', encoding='utf-8', newline='') as f:
+        writer = csv.writer(f, delimiter=';')
+        writer.writerow(['@type', '@id', 'name', 'region', '@lat', '@lon'])
+        writer.writerows(data)
+
+
 def write_csv(data: list[dataRow], output_dir: str, var: Any) -> None:
     os.makedirs(output_dir, exist_ok=True)
 
     if var == 'exceptions':
         path = os.path.join(output_dir, "exceptions.csv")
-        with open(path, 'w', encoding='utf-8', newline='') as f:
-            writer = csv.writer(f, delimiter=';')
-            writer.writerow(['@type', '@id', 'name', 'region', '@lat', '@lon'])
-            writer.writerows(data)
+        _csv_file_writer(data, path)
 
     else:
+        path = os.path.join(output_dir, "all-regions.csv")
+        _csv_file_writer(data, path)
+
         groups = defaultdict(list)
         for row in data:
             region = row[3]
@@ -45,26 +52,27 @@ def write_csv(data: list[dataRow], output_dir: str, var: Any) -> None:
 
             safe_name = region.replace('/', '_').replace('\\', '_')
             path = os.path.join(output_dir, f"{safe_name}.csv")
-            with open(path, 'w', encoding='utf-8', newline='') as f:
-                writer = csv.writer(f, delimiter=';')
-                writer.writerow(
-                    ['@type', '@id', 'name', 'region', '@lat', '@lon']
-                )
-                writer.writerows(rows)
+            _csv_file_writer(rows, path)
+
+
+def _json_file_writer(data: list[dataRow], path: str) -> None:
+    headers = ['@type', '@id', 'name', 'region', '@lat', '@lon']
+    records = [dict(zip(headers, row)) for row in data]
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(records, f, ensure_ascii=False, indent=2)
 
 
 def write_json(data: list[dataRow], output_dir: str, var: Any) -> None:
     os.makedirs(output_dir, exist_ok=True)
 
-    headers = ['@type', '@id', 'name', 'region', '@lat', '@lon']
-
     if var == 'exceptions':
         path = os.path.join(output_dir, "exceptions.json")
-        records = [dict(zip(headers, row)) for row in data]
-        with open(path, 'w', encoding='utf-8') as f:
-            json.dump(records, f, indent=4, ensure_ascii=False)
+        _json_file_writer(data, path)
 
     else:
+        path = os.path.join(output_dir, "all-regions.json")
+        _json_file_writer(data, path)
+
         groups = defaultdict(list)
         for row in data:
             region = row[3]
@@ -76,6 +84,4 @@ def write_json(data: list[dataRow], output_dir: str, var: Any) -> None:
 
             safe_name = region.replace('/', '_').replace('\\', '_')
             path = os.path.join(output_dir, f"{safe_name}.json")
-            records = [dict(zip(headers, row)) for row in rows]
-            with open(path, 'w', encoding='utf-8') as f:
-                json.dump(records, f, indent=4, ensure_ascii=False)
+            _json_file_writer(rows, path)
