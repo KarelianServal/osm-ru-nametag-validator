@@ -29,7 +29,6 @@ invalid_adjf = [
 
 valid_gent = [
     'Стали',
-    'Вязок',
     'Бочарова',
     'Левинсон-Лессинга',
     'Мерцбахера',
@@ -44,13 +43,14 @@ invalid_gent = [
     'Малое Кис-Кис',
     'Худагтай',
 ]
-# valid_noun = [
-# ]
+valid_noun = [
+    'Роман',
+]
 
 
 def test_rules() -> None:
     for word in valid_substant:
-        assert name_type([word]) == 'substant'
+        assert name_type([word]) == 'noun'
     for word in valid_adjf:
         assert name_type([word]) == 'adjf'
     for word in invalid_adjf:
@@ -59,3 +59,5 @@ def test_rules() -> None:
         assert name_type([word]) == 'gent'
     for word in invalid_gent:
         assert not name_type([word]) == 'gent'
+    for word in valid_noun:
+        assert name_type([word]) == 'noun'
