@@ -247,6 +247,7 @@ table.navigation-table{
     @media (max-width: 470px) {
         font-size: 1em;
         padding: 0px;
+    }
     @media (max-width: 430px) {
         font-size: 0.9em;
         padding: 0px;
