@@ -1,27 +1,6 @@
 <extend template="base.shtml">
     <head id="head">
         <style>
-         th:nth-child(5),
-         th:nth-child(6) { width: 145px; }
-         th:nth-child(1) { width: 88px; }
-         th:nth-child(2) { width: 135px; }
-
-         @media (max-width: 900px) {
-             th:nth-child(4),
-             td:nth-child(4) { display: none; }
-         }
-         @media (max-width: 700px) {
-             th:nth-child(1),
-             td:nth-child(1),
-             th:nth-child(2),
-             td:nth-child(2) { display: none; }
-         }
-         @media (max-width: 500px) {
-             th:nth-child(5),
-             td:nth-child(5),
-             th:nth-child(6),
-             td:nth-child(6) { display: none; }
-         }
         </style>
     </head>
     <body id="body">

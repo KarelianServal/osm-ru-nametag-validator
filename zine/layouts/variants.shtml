@@ -1,10 +1,6 @@
 <extend template="base.shtml">
     <head id="head">
         <style>
-         @media (max-width: 400px) {
-             th:nth-child(3),
-             td:nth-child(3) { display: none; }
-         }
         </style>
     </head>
 

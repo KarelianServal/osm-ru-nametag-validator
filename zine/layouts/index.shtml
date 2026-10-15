@@ -1,9 +1,6 @@
 <extend template="base.shtml">
     <head id="head">
         <style>
-         .content{
-             text-align: center;
-         }
         </style>
     </head>
     <body id="body">
@@ -29,7 +26,7 @@
                     <td><span :text="$loop.it.value.get('pct')"></span>%</td></tr></tr>   
         </table>
 
-        <div class="content" :html="$page.content()"></div>
+        <div class="index content" :html="$page.content()"></div>
 
 
     </body>
