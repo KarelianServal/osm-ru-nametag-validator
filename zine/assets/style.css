@@ -28,6 +28,7 @@
     --rosewater: #f5e0dc ;
 
 
+    --blue-transparent:  rgb(137, 180, 250, 0.3);
     --red-transparent:   rgb(243, 139, 168, 0.05);
     --green-transparent: rgb(166, 227, 161, 0.05);
 
@@ -92,7 +93,7 @@ h1,h2 {
 }
 h2 { margin-top: 10px; }
 code {
-    color: var(--blue);
+    color: var(--flamingo);
     font-family: "Iosevka", monospace;
 }
 
@@ -107,6 +108,23 @@ table a {
     color: var(--text);
 }
 
+table {
+    font-family: "PT Sans";
+    a { text-decoration: none; }
+    td:nth-child(1) {
+        a {
+            text-decoration: underline dotted;
+            text-decoration-thickness: 0.1em;
+            text-decoration-color: var(--blue-transparent);
+            text-underline-offset: 0.3em;
+            color: var(--blue);
+        }
+        a:hover {
+            text-decoration: underline;
+            text-decoration-thickness: 0.1em;
+        }
+    }
+}
 html {
     font-family: "PT Serif", serif;
     font-size: 1.3em;
@@ -210,20 +228,15 @@ td {
 table {
     margin: 0 auto;
 }
-table a {
-    text-decoration: none;
-}
-table a:hover {
-    text-decoration: underline;
-}
 table.navigation-table{
+    font-size: 1.1em;
     margin: 0 auto;
-    max-width: 450px;
+    max-width: 500px;
     p { margin: 0; display: inline; }
     td {
         border: 1px solid var(--overlay);
         text-align: center;
-        padding: 9px;
+        padding: 9px 14px;
     }
 }
 table.regions-table {
