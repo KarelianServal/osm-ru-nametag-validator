@@ -15,15 +15,15 @@
 
         <table class="navigation-table">
             <tr>
-                <td><a href="$site.page('variants/exceptions').link()">Исключения</a></td>
-                <td><a href="$site.page('variants/exceptions').link()">
+                <td><a href="$site.page('variants', 'exceptions').link()">Исключения</a></td>
+                <td><a href="$site.page('variants', 'exceptions').link()">
                     <span :text="$site.asset('out/stats.json').ziggy().get('exceptions').get('amount')"></span> /
                     <span :text="$site.asset('out/stats.json').ziggy().get('names_amount').get('all')"></span></a></td>
                 <td><span :text="$site.asset('out/stats.json').ziggy().get('exceptions').get('pct')"></span>%</td></tr>
             <tr :loop="$site.asset('out/stats.json').ziggy().get('variant').iterate()">
                 <tr>
-                    <td><a href="$loop.it.key.prefix('variants/')">Вариант <span :text="$loop.it.key"></span></a></td>
-                    <td><a href="$loop.it.key.prefix('variants/')">
+                    <td><a href="$site.page('variants', $loop.it.key).link()">Вариант <span :text="$loop.it.key"></span></a></td>
+                    <td><a href="$site.page('variants', $loop.it.key).link()">
                         <span :text="$loop.it.value.get('amount')"></span> /
                         <span :text="$site.asset('out/stats.json').ziggy().get('names_amount').get('legal')"></span></a></td>
                     <td><span :text="$loop.it.value.get('pct')"></span>%</td></tr></tr>   

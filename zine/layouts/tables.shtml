@@ -25,7 +25,7 @@
         </style>
     </head>
     <body id="body">
-        <h1><a href="$site.page($page.custom.get('variant').prefix('variants/')).link()" :text="$page.title"></a></h1>
+        <h1><a href="$site.page('variants', $page.custom.get('variant')).link()" :text="$page.title"></a></h1>
         <h2 :text="$page.description"></h2>
 
         <div :if="$page.custom.has('invalid_data')">
